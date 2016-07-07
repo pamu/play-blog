@@ -1,8 +1,8 @@
 package models
 
-import java.sql.Timestamp
 import javax.inject.{Inject, Singleton}
 
+import org.joda.time.DateTime
 import play.api.db.slick.DatabaseConfigProvider
 import slick.driver.JdbcProfile
 
@@ -11,17 +11,18 @@ import scala.concurrent.Future
 /**
   * Created by pnagarjuna on 05/04/16.
   */
-case class BlogPost(userId: Long, title: String, summary: String, tags: String, createdAt: Timestamp, id: Option[Long] = None)
+case class BlogPost(userId: Long, title: String, summary: String, tags: String, createdAt: DateTime, id: Option[Long] = None)
 
 @Singleton
-class BlogPostRepo @Inject()(protected val dbConfigProvider: DatabaseConfigProvider) {
+class BlogPostRepo @Inject()(protected val dbConfigProvider: DatabaseConfigProvider) extends Mapping {
   val dbConfig = dbConfigProvider.get[JdbcProfile]
   import dbConfig.driver.api._
   val db = dbConfig.db
+
   private val blogPosts = TableQuery[BlogPostTable]
 
-  def findById(id: Long): Future[BlogPost] = {
-    db.run(blogPosts.filter(_.id === id).result.head)
+  def findById(id: Long): Future[Option[BlogPost]] = {
+    db.run(blogPosts.filter(_.id === id).result.headOption)
   }
 
   private class BlogPostTable(tag: Tag) extends Table[BlogPost](tag, "BLOG_POSTS") {
@@ -30,7 +31,7 @@ class BlogPostRepo @Inject()(protected val dbConfigProvider: DatabaseConfigProvi
     def title = column[String]("TITLE")
     def summary = column[String]("SUMMARY")
     def tags = column[String]("TAGS")
-    def createdAt = column[Timestamp]("CREATED_AT")
+    def createdAt = column[DateTime]("CREATED_AT")
     def * = (userId, title, summary, tags, createdAt, id.?) <> (BlogPost.tupled, BlogPost.unapply)
   }
 }
