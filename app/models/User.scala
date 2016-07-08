@@ -1,6 +1,5 @@
 package models
 
-import java.sql.Timestamp
 import javax.inject.{Inject, Singleton}
 
 import org.joda.time.DateTime
@@ -15,17 +14,18 @@ import scala.concurrent.Future
 case class User(name: String, email: String, key: String, createdAt: DateTime, id: Option[Long] = None)
 
 @Singleton
-class UserRepo @Inject()(protected val dbConfigProvider: DatabaseConfigProvider) extends Mapping {
+class UsersRepo @Inject()(protected val dbConfigProvider: DatabaseConfigProvider) extends Mapping {
   val dbConfig = dbConfigProvider.get[JdbcProfile]
   import dbConfig.driver.api._
   val db = dbConfig.db
-  private val users = TableQuery[UserTable]
+
+  val users = TableQuery[UserTable]
 
   def findById(id: Long): Future[User] = {
     db.run(users.filter(_.id === id).result.head)
   }
 
-  private class UserTable(tag: Tag) extends Table[User](tag, "USER") {
+  class UserTable(tag: Tag) extends Table[User](tag, UsersTable.name) {
     def id = column[Long]("ID", O.AutoInc, O.PrimaryKey)
     def name = column[String]("NAME")
     def email = column[String]("EMAIL")

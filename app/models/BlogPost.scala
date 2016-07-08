@@ -19,13 +19,13 @@ class BlogPostRepo @Inject()(protected val dbConfigProvider: DatabaseConfigProvi
   import dbConfig.driver.api._
   val db = dbConfig.db
 
-  private val blogPosts = TableQuery[BlogPostTable]
+  val blogPosts = TableQuery[BlogPostTable]
 
   def findById(id: Long): Future[Option[BlogPost]] = {
     db.run(blogPosts.filter(_.id === id).result.headOption)
   }
 
-  private class BlogPostTable(tag: Tag) extends Table[BlogPost](tag, "BLOG_POSTS") {
+  class BlogPostTable(tag: Tag) extends Table[BlogPost](tag, "BLOG_POSTS") {
     def id = column[Long]("ID", O.AutoInc, O.PrimaryKey)
     def userId = column[Long]("USER_ID")
     def title = column[String]("TITLE")

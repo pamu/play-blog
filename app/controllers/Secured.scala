@@ -1,18 +1,18 @@
 package controllers
 
-import models.{User, UserRepo}
+import models.UsersRepo
 import play.api.Logger
 import play.api.mvc._
+import models._
 
 import scala.concurrent.Future
 import scala.util.{Failure, Success, Try}
-import play.api.libs.concurrent.Execution.Implicits.defaultContext
-
+import scala.concurrent.ExecutionContext.Implicits.global
 /**
   * Created by pnagarjuna on 04/04/16.
   */
 trait UserRepoProvider {
-  val userRepo: UserRepo
+  val userRepo: UsersRepo
 }
 
 trait Secured {
