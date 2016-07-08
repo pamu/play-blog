@@ -1,8 +1,7 @@
 package models
 
 import com.google.inject.{Inject, Singleton}
-import play.api.db.slick.DatabaseConfigProvider
-import slick.driver.JdbcProfile
+import slick.lifted.TableQuery
 
 /**
   * Created by pnagarjuna on 08/07/16.
@@ -19,7 +18,11 @@ case object UsersTable extends TableName("users")
 class Tables @Inject() (val gistRepo: GistRepo,
                         val blogPostRepo: BlogPostRepo,
                         val usersRepo: UsersRepo) {
-  val tables = Map(
+
+//  val dbConfig = dbConfigProvider.get[JdbcProfile]
+//  import dbConfig.driver.api._
+
+  val tables: Map[String, TableQuery[_]] = Map(
     UsersTable.name -> usersRepo.users,
     GistsTable.name -> gistRepo.gists,
     BlogPostsTable.name -> blogPostRepo.blogPosts
