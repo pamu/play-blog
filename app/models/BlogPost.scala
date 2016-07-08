@@ -25,7 +25,7 @@ class BlogPostRepo @Inject()(protected val dbConfigProvider: DatabaseConfigProvi
     db.run(blogPosts.filter(_.id === id).result.headOption)
   }
 
-  class BlogPostTable(tag: Tag) extends Table[BlogPost](tag, "BLOG_POSTS") {
+  class BlogPostTable(tag: Tag) extends Table[BlogPost](tag, BlogPostsTable.name) {
     def id = column[Long]("ID", O.AutoInc, O.PrimaryKey)
     def userId = column[Long]("USER_ID")
     def title = column[String]("TITLE")
