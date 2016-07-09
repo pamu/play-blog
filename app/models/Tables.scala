@@ -1,7 +1,13 @@
 package models
 
 import com.google.inject.{Inject, Singleton}
-import slick.lifted.TableQuery
+import models.exceptions.TableNameNotFoundException
+import play.api.db.slick.DatabaseConfigProvider
+import slick.driver.JdbcProfile
+import slick.jdbc.meta.MTable
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Await
+import scala.concurrent.duration.Duration
 
 /**
   * Created by pnagarjuna on 08/07/16.
@@ -15,18 +21,36 @@ case object GistsTable extends TableName("gists")
 case object UsersTable extends TableName("users")
 
 @Singleton
-class Tables @Inject() (val gistRepo: GistRepo,
-                        val blogPostRepo: BlogPostRepo,
-                        val usersRepo: UsersRepo) {
+class Tables @Inject()(val dbConfigProvider: DatabaseConfigProvider,
+                       val gistRepo: GistRepo,
+                       val blogPostRepo: BlogPostRepo,
+                       val usersRepo: UsersRepo) {
 
-//  val dbConfig = dbConfigProvider.get[JdbcProfile]
-//  import dbConfig.driver.api._
+  val dbConfig = dbConfigProvider.get[JdbcProfile]
 
-  val tables: Map[String, TableQuery[_]] = Map(
+  val tables = List(
     UsersTable.name -> usersRepo.users,
     GistsTable.name -> gistRepo.gists,
     BlogPostsTable.name -> blogPostRepo.blogPosts
   )
 
+  def generateSchema: Unit = {
+    import dbConfig.driver.api._
+    val db = dbConfig.db
+    val actions =
+      tables.map { case (name, table) =>
+        MTable.getTables(name).headOption.flatMap { optMTable =>
+          optMTable match {
+            case Some(table) => DBIO.successful(table.name)
+            case None => DBIO.failed(TableNameNotFoundException)
+          }
+        }.flatMap { _ =>
+          val action: DBIO[Unit] = table.schema.create
+          action
+        }.transactionally
+      }
+    val f = db.run(DBIO.sequence(actions).transactionally)
+    Await.result(f, Duration.Inf)
+  }
 
 }
