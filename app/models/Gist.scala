@@ -18,6 +18,7 @@ class GistRepo @Inject()(protected val dbConfigProvider: DatabaseConfigProvider)
   val db = dbConfig.db
   val gists = TableQuery[GistTable]
 
+
   class GistTable(tag: Tag) extends Table[Gist](tag, GistsTable.name) {
     def blogPostId = column[Long]("BLOG_POST_ID")
     def title = column[Option[String]]("TITLE")
