@@ -14,7 +14,8 @@ import scala.concurrent.Future
 case class BlogPost(userId: Long, title: String, summary: String, tags: String, createdAt: DateTime, id: Option[Long] = None)
 
 @Singleton
-class BlogPostRepo @Inject()(protected val dbConfigProvider: DatabaseConfigProvider) extends Mapping {
+class BlogPostRepo @Inject()(protected val dbConfigProvider: DatabaseConfigProvider,
+                             val usersRepo: UsersRepo) extends Mapping {
   val dbConfig = dbConfigProvider.get[JdbcProfile]
   import dbConfig.driver.api._
   val db = dbConfig.db
@@ -33,5 +34,6 @@ class BlogPostRepo @Inject()(protected val dbConfigProvider: DatabaseConfigProvi
     def tags = column[String]("TAGS")
     def createdAt = column[DateTime]("CREATED_AT")
     def * = (userId, title, summary, tags, createdAt, id.?) <> (BlogPost.tupled, BlogPost.unapply)
+    def userIdFk = foreignKey("blogpost_userid_fk", userId, usersRepo.users)(_.id)
   }
 }
