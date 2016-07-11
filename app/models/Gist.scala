@@ -12,7 +12,8 @@ import slick.driver.JdbcProfile
 case class Gist(blogPostId: Long, title: Option[String], summary: Option[String], githubId: String, createdAt: Timestamp, id: Option[Long] = None)
 
 @Singleton
-class GistRepo @Inject()(protected val dbConfigProvider: DatabaseConfigProvider) {
+class GistRepo @Inject()(protected val dbConfigProvider: DatabaseConfigProvider,
+                         val blogPostRepo: BlogPostRepo) {
   val dbConfig = dbConfigProvider.get[JdbcProfile]
   import dbConfig.driver.api._
   val db = dbConfig.db
@@ -27,6 +28,7 @@ class GistRepo @Inject()(protected val dbConfigProvider: DatabaseConfigProvider)
     def createdAt = column[Timestamp]("CREATED_AT")
     def id = column[Long]("ID")
     def * = (blogPostId, title, summary, githubId, createdAt, id.?) <> (Gist.tupled, Gist.unapply)
+    def blogPostIdFk = foreignKey("blogpost_gist_fk", blogPostId, blogPostRepo.blogPosts)(_.id)
   }
 
 }
