@@ -14,15 +14,15 @@ class Application @Inject()(override val userRepo: UsersRepo) extends Controller
   with Secured {
 
   def index = Action.async { implicit req =>
-    Future(Ok(views.html.index("Pure Code")(req.flash)))
+    Future(Ok(views.html.index("Pure Code")))
   }
 
   def profile(name: String) = Action { implicit req =>
-    Ok(views.html.me("Pure Code")(req.flash))
+    Ok(views.html.me("Pure Code"))
   }
 
   def publicProfile(name: String) = Action { implicit req =>
-    Ok(views.html.publicProfile()(req.flash))
+    Ok(views.html.publicProfile())
   }
 
   def profileId(id: String) = Action { implicit req =>

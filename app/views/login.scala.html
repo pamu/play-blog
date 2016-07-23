@@ -1,4 +1,4 @@
-@(form: Form[(String, String)])(flash: play.api.mvc.Flash)(implicit session: play.api.mvc.Session)
+@(form: Form[(String, String)])
 
 @main("Pure Code") {
     <div class="section">
@@ -10,14 +10,6 @@
     <br/>
 
     <div class="row">
-
-        @flash.get("success").map{ message =>
-            <div class="chip">@message</div>
-        }
-
-        @flash.get("failure").map{ message =>
-            <div class="chip">@message</div>
-        }
 
         <form class="col s12" method="POST" action="/user/loginaction">
             <div class="row">
@@ -41,8 +33,5 @@
             </div>
         </form>
 
-        @form.globalErrors.map{ error =>
-            <div class="chip">@{error.message}</div>
-        }
     </div>
 }

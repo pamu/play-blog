@@ -3,7 +3,8 @@ package controllers
 import play.api.data.Form
 import play.api.data.Forms._
 import play.api.mvc.{Action, Controller}
-import scala.concurrent.ExecutionContext.Implicits.global
+//import scala.concurrent.ExecutionContext.Implicits.global
+import play.api.libs.concurrent.Execution.Implicits.defaultContext
 import scala.concurrent.Future
 
 /**
@@ -12,7 +13,7 @@ import scala.concurrent.Future
 class Auth extends Controller {
 
   def login = Action { implicit req =>
-    Ok(views.html.login(loginForm)(req.flash))
+    Ok(views.html.login(loginForm))
   }
 
   val loginForm = Form(
@@ -24,17 +25,17 @@ class Auth extends Controller {
 
   def loginPost = Action.async { implicit req =>
     loginForm.bindFromRequest().fold(
-      errors => Future(BadRequest(views.html.login(errors)(req.flash)).withNewSession.flashing("failure" -> "login failed")),
+      errors => Future(BadRequest(views.html.login(errors)).withNewSession.flashing("failure" -> "login failed")),
       data => Future(Ok("done"))
     )
   }
 
   def signUp = Action { implicit req =>
-    Ok(views.html.signup("SignUp")(req.flash))
+    Ok(views.html.signup("SignUp"))
   }
 
   def forgotPassword = Action { implicit req =>
-    Ok(views.html.forgotpassword("Forgot Password")(req.flash))
+    Ok("")
   }
 
 }
