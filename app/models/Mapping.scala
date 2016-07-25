@@ -6,9 +6,6 @@ import org.joda.time.DateTime
 import slick.backend.DatabaseConfig
 import slick.driver.JdbcProfile
 
-/**
-  * Created by pnagarjuna on 07/07/16.
-  */
 trait Mapping {
   val dbConfig: DatabaseConfig[JdbcProfile]
 

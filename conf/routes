@@ -4,18 +4,12 @@
 
 # Auth Controller
 
-GET     /user/login                      controllers.Auth.login
-POST    /user/loginaction                controllers.Auth.loginPost
-GET     /user/signup                     controllers.Auth.signUp
-GET     /user/forgotpassword             controllers.Auth.forgotPassword
-GET     /:name                           controllers.Application.profile(name: String)
-GET     /public/:name                    controllers.Application.publicProfile(name: String)
-GET     /profile/:id                     controllers.Application.profileId(id: String)
+GET     /login                           controllers.Auth.login
+
 
 # Application Controller
 
 GET     /                                controllers.Application.index
-GET     /blogpost/:heading               controllers.Application.blogPost(heading: String)
 
 
 # Map static resources from the /public folder to the /assets URL path

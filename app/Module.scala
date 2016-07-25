@@ -1,12 +1,17 @@
-import com.google.inject.AbstractModule
+import com.google.inject.{AbstractModule, Singleton}
 
-/**
-  * Created by pnagarjuna on 04/07/16.
-  */
+
 class Module extends AbstractModule {
 
   override def configure(): Unit = {
-
+    bind(classOf[AppStart]).asEagerSingleton()
   }
 
+}
+
+@Singleton
+class AppStart extends AbstractModule {
+  override def configure(): Unit = {
+
+  }
 }

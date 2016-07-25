@@ -9,9 +9,6 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Await
 import scala.concurrent.duration.Duration
 
-/**
-  * Created by pnagarjuna on 08/07/16.
-  */
 abstract class TableName(val name: String)
 
 case object BlogPostsTable extends TableName("blog_posts")
@@ -39,11 +36,9 @@ class Tables @Inject()(val dbConfigProvider: DatabaseConfigProvider,
     val db = dbConfig.db
     val actions =
       tables.map { case (name, table) =>
-        MTable.getTables(name).headOption.flatMap { optMTable =>
-          optMTable match {
-            case Some(table) => DBIO.successful(table.name)
-            case None => DBIO.failed(TableNameNotFoundException)
-          }
+        MTable.getTables(name).headOption.flatMap {
+          case Some(table) => DBIO.successful(table.name)
+          case None => DBIO.failed(TableNameNotFoundException)
         }.flatMap { _ =>
           val action: DBIO[Unit] = table.schema.create
           action

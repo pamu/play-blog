@@ -2,16 +2,15 @@ package models
 
 import javax.inject.{Inject, Singleton}
 
+import models.ids.Ids.{BlogPostId, UserId}
 import org.joda.time.DateTime
 import play.api.db.slick.DatabaseConfigProvider
 import slick.driver.JdbcProfile
 
 import scala.concurrent.Future
 
-/**
-  * Created by pnagarjuna on 05/04/16.
-  */
-case class BlogPost(userId: Long, title: String, summary: String, tags: String, createdAt: DateTime, id: Option[Long] = None)
+case class BlogPost(userId: UserId, title: String, summary: String, createdAt: DateTime,
+                    id: Option[BlogPostId] = None)
 
 @Singleton
 class BlogPostRepo @Inject()(protected val dbConfigProvider: DatabaseConfigProvider,
@@ -31,9 +30,8 @@ class BlogPostRepo @Inject()(protected val dbConfigProvider: DatabaseConfigProvi
     def userId = column[Long]("USER_ID")
     def title = column[String]("TITLE")
     def summary = column[String]("SUMMARY")
-    def tags = column[String]("TAGS")
     def createdAt = column[DateTime]("CREATED_AT")
-    def * = (userId, title, summary, tags, createdAt, id.?) <> (BlogPost.tupled, BlogPost.unapply)
-    def userIdFk = foreignKey("blogpost_userid_fk", userId, usersRepo.users)(_.id)
+    def * = (userId, title, summary, createdAt, id.?) <> (BlogPost.tupled, BlogPost.unapply)
+    def userIdFk = foreignKey("BLOGPOST_USERID_FK", userId, usersRepo.users)(_.id)
   }
 }

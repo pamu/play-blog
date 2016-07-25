@@ -2,16 +2,14 @@ package models
 
 import javax.inject.{Inject, Singleton}
 
+import models.ids.Ids.UserId
 import org.joda.time.DateTime
 import play.api.db.slick.DatabaseConfigProvider
 import slick.driver.JdbcProfile
 
 import scala.concurrent.Future
 
-/**
-  * Created by pnagarjuna on 04/04/16.
-  */
-case class User(name: String, email: String, key: String, createdAt: DateTime, id: Option[Long] = None)
+case class User(name: String, email: String, key: String, createdAt: DateTime, id: Option[UserId] = None)
 
 @Singleton
 class UsersRepo @Inject()(protected val dbConfigProvider: DatabaseConfigProvider) extends Mapping {
