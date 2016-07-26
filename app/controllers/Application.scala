@@ -3,6 +3,7 @@ package controllers
 import com.google.inject.Inject
 import play.api.mvc.Controller
 import models._
+import models.repos.UsersRepo
 
 import scala.concurrent.Future
 

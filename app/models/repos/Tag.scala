@@ -1,4 +1,4 @@
-package models
+package models.repos
 
 import com.google.inject.{Inject, Singleton}
 import models.ids.Ids.TagId

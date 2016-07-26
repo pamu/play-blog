@@ -1,8 +1,7 @@
 package controllers
 
-import models.UsersRepo
 import play.api.mvc._
-import models._
+import models.repos.{User, UsersRepo}
 
 import scala.concurrent.Future
 import scala.util.{Failure, Success, Try}

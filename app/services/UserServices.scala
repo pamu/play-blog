@@ -1,4 +1,4 @@
-package models.services
+package services
 
 import com.google.inject.{Inject, Singleton}
 

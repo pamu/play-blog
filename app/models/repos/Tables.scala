@@ -1,12 +1,13 @@
-package models
+package models.repos
 
 import com.google.inject.{Inject, Singleton}
 import models.exceptions.TableNameNotFoundException
 import play.api.db.slick.DatabaseConfigProvider
 import slick.driver.JdbcProfile
 import slick.jdbc.meta.MTable
-import scala.concurrent.ExecutionContext.Implicits.global
+
 import scala.concurrent.Await
+import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration.Duration
 
 abstract class TableName(val name: String)
