@@ -1,11 +1,11 @@
 package models.repos
 
-import com.google.inject.{AbstractModule, Singleton}
+import com.google.inject.{AbstractModule, Inject, Singleton}
 
 
 @Singleton
-class AppStart extends AbstractModule {
+class AppStart @Inject() (tables: Tables) extends AbstractModule {
   override def configure(): Unit = {
-
+    tables.createTables()
   }
 }
