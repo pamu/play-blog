@@ -1,5 +1,6 @@
 package controllers
 
+import models.ids.UserId
 import play.api.mvc._
 import models.repos.{User, UsersRepo}
 
@@ -29,7 +30,7 @@ trait Secured {
     }
 
   def withUser[A](p: BodyParser[A])(f: User => Request[A] => Future[Result]) = withAuth(p) { id => request =>
-    userRepo.findById(id).flatMap { user => f(user)(request) }
+    userRepo.findById(UserId(id)).flatMap { user => f(user)(request) }
       .recover { case th => Results.Redirect(routes.Auth.login).withNewSession }
   }
 

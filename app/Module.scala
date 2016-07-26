@@ -1,11 +1,13 @@
 import com.google.inject.AbstractModule
-import models.repos.AppStart
+import models.repos.{AppStart, Tables}
+import play.api.{Configuration, Environment}
 
 
-class Module extends AbstractModule {
+class Module(environment: Environment, configuration: Configuration) extends AbstractModule {
 
   override def configure(): Unit = {
-    bind(classOf[AppStart]).asEagerSingleton()
+    //bind(classOf[Tables]).asEagerSingleton()
+    //bind(classOf[AppStart]).asEagerSingleton()
   }
 
 }
