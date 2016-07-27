@@ -11,6 +11,3 @@ object RandomSecureString {
   def getOne: RandomSecureString = RandomSecureString(BigInt(130, secureRandom).toString(32))
 }
 
-case class State(json: JsValue) {
-  override def toString() = json.toString()
-}

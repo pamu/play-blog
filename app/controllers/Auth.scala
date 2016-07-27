@@ -4,7 +4,7 @@ import com.google.inject.Inject
 import play.api.libs.json.Json
 import play.api.mvc.{Action, Controller}
 import services.OAuthServices
-import services.models.{RandomSecureString, State}
+import services.models.RandomSecureString
 
 import scala.concurrent.Future
 
@@ -12,7 +12,7 @@ class Auth @Inject()(oAuthServices: OAuthServices) extends Controller {
 
   def login = Action.async { implicit req =>
     Future.successful {
-      Redirect(routes.Auth.oauth2(State(Json.obj("msg" -> "hello"))))
+      Redirect(routes.Auth.oauth2(1))
     }
   }
 
@@ -28,7 +28,7 @@ class Auth @Inject()(oAuthServices: OAuthServices) extends Controller {
   }
 
 
-  def oauth2(state: State) = Action { req =>
+  def oauth2(state: Long) = Action { req =>
     val random = RandomSecureString.getOne
     val params = Map[String, String](
       "response_type" -> "token",

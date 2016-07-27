@@ -4,7 +4,7 @@
 
 # Auth Controller
 GET     /login                           controllers.Auth.login
-GET     /oauth2                          controllers.Auth.oauth2(state: State)
+GET     /oauth2                          controllers.Auth.oauth2(state: Long)
 # Application Controller
 GET     /                                controllers.Application.index
 
