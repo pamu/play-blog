@@ -32,11 +32,11 @@ class Auth @Inject()(oAuthServices: OAuthServices) extends Controller {
     val random = RandomSecureString.getOne
     val params = Map[String, String](
       "response_type" -> "token",
-      "client_id" -> GOAuthEndpoints.clientId,
-      "nonce" -> random.str,
+      "client_id" -> s"${GOAuthEndpoints.clientId}",
+      "nonce" -> s"${random.str}",
       "redirect_uri" -> "http://rxcode.herokuapp.com/oauth2callback",
       "scope" -> "email",
-      "state" -> state.toString()
+      "state" -> s"${state.toString()}"
     ).convert.mkString("?", "&", "").toString
     val requestURI = s"${GOAuthEndpoints.goauthServiceURL}${params}"
 
