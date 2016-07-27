@@ -22,7 +22,7 @@ class GOAuthServicesImpl @Inject()(wsClient: WSClient) extends OAuthServices {
       "response_type" -> "token",
       "client_id" -> GOAuthEndpoints.clientId,
       "nonce" -> random.str,
-      "redirect_uri" -> "http://purecode.herokuapp.com/oauth2callback",
+      "redirect_uri" -> "http://rxcode.herokuapp.com/oauth2callback",
       "scope" -> "email",
       "state" -> state.toString()
     ).get().flatMap { wsRes =>
@@ -38,6 +38,6 @@ class GOAuthServicesImpl @Inject()(wsClient: WSClient) extends OAuthServices {
 
 object GOAuthEndpoints {
   val goauthServiceURL = s"""https://accounts.google.com/o/oauth2/v2/auth"""
-  val clientId = s"""954456399684-64i32ce6ofldm9d3a4p8uc7ia9ebfa6f.apps.googleusercontent.com"""
-  val clientSecret = s"""cqL4fWD7AztjUr3o2fbVcD8F"""
+  val clientId = s"""995561758104-2civgrjum3kij0fhj1h836rppi4jqg04.apps.googleusercontent.com"""
+  val clientSecret = s"""rA7Gu4LIuYC2dPYvTUQk0B9x"""
 }
