@@ -40,7 +40,11 @@ class Auth @Inject()(oAuthServices: OAuthServices) extends Controller {
   }
 
   def oauth2callback() = Action { implicit req =>
-    Ok(req.queryString.mkString)
+    Ok(views.html.oauth2callback())
+  }
+
+  def oauth2callbackCleaned() = Action { req =>
+    Ok(req.queryString.mkString(" "))
   }
 
 }

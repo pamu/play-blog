@@ -1,0 +1,11 @@
+@()
+
+@main("rxcode") {
+    <script>
+        $(function() {
+            if (window.location.href.indexOf('#') > 0) {
+                window.location = window.location.href.replace(/#/, 'cleaned?');
+            }
+        });
+    </script>
+}
