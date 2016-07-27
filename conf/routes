@@ -2,10 +2,13 @@
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
 
-# Auth Controller
+#Auth Controller
+
 GET     /login                           controllers.Auth.login
 GET     /oauth2                          controllers.Auth.oauth2(state: Long)
-# Application Controller
+GET     /oauth2callback                  controllers.Auth.oauth2callback(path: String)
+
+#Application Controller
 GET     /                                controllers.Application.index
 
 # Map static resources from the /public folder to the /assets URL path

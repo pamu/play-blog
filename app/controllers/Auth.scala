@@ -1,10 +1,8 @@
 package controllers
 
 import com.google.inject.Inject
-import play.api.libs.json.Json
 import play.api.mvc.{Action, Controller}
 import services.OAuthServices
-import services.models.RandomSecureString
 
 import scala.concurrent.Future
 
@@ -29,7 +27,6 @@ class Auth @Inject()(oAuthServices: OAuthServices) extends Controller {
 
 
   def oauth2(state: Long) = Action { req =>
-    val random = RandomSecureString.getOne
     val params = Map[String, String](
       "response_type" -> "token",
       "client_id" -> s"${GOAuthEndpoints.clientId}",
@@ -40,6 +37,10 @@ class Auth @Inject()(oAuthServices: OAuthServices) extends Controller {
     val requestURI = s"${GOAuthEndpoints.goauthServiceURL}${params}"
 
     Redirect(requestURI)
+  }
+
+  def oauth2callback(path: String) = Action { implicit req =>
+    Ok(path)
   }
 
 }
