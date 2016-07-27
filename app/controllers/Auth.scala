@@ -7,7 +7,7 @@ import services.endpoints.GOAuthEndpoints
 
 import scala.concurrent.Future
 
-class Auth @Inject()(oAuthServices: OAuthServices) extends Controller {
+class Auth @Inject()(oAuthServices: OAuthServices, gOAuthEndpoints: GOAuthEndpoints) extends Controller {
 
   def login = Action.async {
     Future.successful {
@@ -22,12 +22,12 @@ class Auth @Inject()(oAuthServices: OAuthServices) extends Controller {
   def oauth2(state: Long) = Action {
     val params = Map[String, String](
       "response_type" -> "token",
-      "client_id" -> s"${GOAuthEndpoints.clientId}",
+      "client_id" -> s"${gOAuthEndpoints.clientId}",
       "redirect_uri" -> "http://rxcode.herokuapp.com/oauth2callback",
       "scope" -> "email",
       "state" -> s"${state.toString()}"
     ).convert.mkString("?", "&", "").toString
-    val requestURI = s"${GOAuthEndpoints.goauthServiceURL}${params}"
+    val requestURI = s"${gOAuthEndpoints.goauthServiceURL}${params}"
 
     Redirect(requestURI)
   }
