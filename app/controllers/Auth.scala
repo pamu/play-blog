@@ -39,12 +39,8 @@ class Auth @Inject()(oAuthServices: OAuthServices) extends Controller {
     Redirect(requestURI)
   }
 
-  def oauth2callback(state: Option[Long],
-                     access_token: Option[String],
-                     token_type: Option[String],
-                     expires_in: Option[Int],
-                     error: Option[String]) = Action { implicit req =>
-    Ok(s"""$state $access_token $token_type $expires_in $error""")
+  def oauth2callback() = Action { implicit req =>
+    Ok(req.queryString.mkString)
   }
 
 }

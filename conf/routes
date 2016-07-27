@@ -6,7 +6,7 @@
 
 GET     /login                           controllers.Auth.login
 GET     /oauth2                          controllers.Auth.oauth2(state: Long)
-GET     /oauth2callback                  controllers.Auth.oauth2callback(state: Option[Long], access_token: Option[String], token_type: Option[String], expires_in: Option[Int], error: Option[String])
+GET     /oauth2callback                  controllers.Auth.oauth2callback()
 
 #Application Controller
 GET     /                                controllers.Application.index
