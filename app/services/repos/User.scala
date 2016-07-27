@@ -5,11 +5,12 @@ import javax.inject.{Inject, Singleton}
 import models.ids.UserId
 import org.joda.time.DateTime
 import play.api.db.slick.DatabaseConfigProvider
+import services.models.{Email, NickName, Source}
 import slick.driver.JdbcProfile
 
 import scala.concurrent.Future
 
-case class User(name: String, email: String, key: String, createdAt: DateTime, id: Option[UserId] = None)
+case class User(nickName: NickName, email: Email, source: Source.Value, createdAt: DateTime, id: Option[UserId] = None)
 
 @Singleton
 class UsersRepo @Inject()(protected val dbConfigProvider: DatabaseConfigProvider) extends Mappings {
@@ -25,11 +26,11 @@ class UsersRepo @Inject()(protected val dbConfigProvider: DatabaseConfigProvider
 
   class Users(tag: Tag) extends Table[User](tag, UsersTable.name) {
     def id = column[UserId]("ID", O.AutoInc, O.PrimaryKey)
-    def name = column[String]("NAME")
-    def email = column[String]("EMAIL")
-    def key = column[String]("KEY")
+    def name = column[NickName]("NICK_NAME")
+    def email = column[Email]("EMAIL")
+    def source = column[Source.Value]("SOURCE")
     def createdAt = column[DateTime]("CREATED_AT")
-    def * = (name, email, key, createdAt, id.?) <> (User.tupled, User.unapply)
+    def * = (name, email, source, createdAt, id.?) <> (User.tupled, User.unapply)
   }
 
 }

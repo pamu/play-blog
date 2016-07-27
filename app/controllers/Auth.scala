@@ -3,12 +3,13 @@ package controllers
 import com.google.inject.Inject
 import play.api.mvc.{Action, Controller}
 import services.OAuthServices
+import services.endpoints.GOAuthEndpoints
 
 import scala.concurrent.Future
 
 class Auth @Inject()(oAuthServices: OAuthServices) extends Controller {
 
-  def login = Action.async { implicit req =>
+  def login = Action.async {
     Future.successful {
       Redirect(routes.Auth.oauth2(1))
     }
@@ -18,15 +19,7 @@ class Auth @Inject()(oAuthServices: OAuthServices) extends Controller {
     def convert: List[String] = rMap.map(pair => s"${pair._1}=${pair._2}").toList
   }
 
-
-  object GOAuthEndpoints {
-    val goauthServiceURL = s"""https://accounts.google.com/o/oauth2/v2/auth"""
-    val clientId = s"""995561758104-2civgrjum3kij0fhj1h836rppi4jqg04.apps.googleusercontent.com"""
-    val clientSecret = s"""rA7Gu4LIuYC2dPYvTUQk0B9x"""
-  }
-
-
-  def oauth2(state: Long) = Action { req =>
+  def oauth2(state: Long) = Action {
     val params = Map[String, String](
       "response_type" -> "token",
       "client_id" -> s"${GOAuthEndpoints.clientId}",
@@ -39,7 +32,7 @@ class Auth @Inject()(oAuthServices: OAuthServices) extends Controller {
     Redirect(requestURI)
   }
 
-  def oauth2callback() = Action { implicit req =>
+  def oauth2callback() = Action {
     Ok(views.html.oauth2callback())
   }
 
