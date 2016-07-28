@@ -2,6 +2,8 @@ package services.models
 
 case class Email(emailStr: String)
 
+case class Name(nameStr: String)
+
 case class UserInfo(email: Email)
 
 object UserInfo {

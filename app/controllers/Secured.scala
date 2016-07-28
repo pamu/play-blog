@@ -1,6 +1,6 @@
 package controllers
 
-import models.ids.UserId
+import services.ids._
 import play.api.mvc._
 import models.repos.{User, UsersRepo}
 
@@ -15,8 +15,8 @@ trait UserRepoProvider {
 trait Secured {
   self: UserRepoProvider =>
 
-  def id(requestHeader: RequestHeader): Option[Long] = {
-    Try(requestHeader.session.get("id").map(_.toLong)) match {
+  def id(requestHeader: RequestHeader): Option[String] = {
+    Try(requestHeader.session.get("id")) match {
       case Success(optId) => optId
       case Failure(th) => None
     }
@@ -24,7 +24,7 @@ trait Secured {
 
   def onUnauthorized(requestHeader: RequestHeader) = Results.Redirect(routes.Auth.login).withNewSession
 
-  def withAuth[A](p: BodyParser[A])(f: => Long => Request[A] => Future[Result]) =
+  def withAuth[A](p: BodyParser[A])(f: => String => Request[A] => Future[Result]) =
     Security.Authenticated(id, onUnauthorized) { id =>
       Action.async(p) { request => f(id)(request) }
     }

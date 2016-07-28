@@ -37,7 +37,14 @@ class Auth @Inject()(oAuthServices: OAuthServices, gOAuthEndpoints: GOAuthEndpoi
   }
 
   def oauth2callbackCleaned() = Action { req =>
-    Ok(req.queryString.mkString(" "))
+    val qMap = req.queryString
+    if (qMap.contains("access_token")) {
+      //+ve flow
+      Redirect(routes.Application.index).withSession("id" -> "some_id")
+    } else {
+      //-ve flow redirect to login screen
+      Redirect(routes.Auth.login)
+    }
   }
 
 }

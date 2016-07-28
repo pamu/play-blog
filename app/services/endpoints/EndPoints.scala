@@ -1,9 +1,9 @@
 package services.endpoints
 
-import com.google.inject.Singleton
+import com.google.inject.{Inject, Singleton}
 
 @Singleton
-class GOAuthEndpoints {
+class GOAuthEndpoints @Inject() () {
   val goauthServiceURL = s"""https://accounts.google.com/o/oauth2/v2/auth"""
   val clientId = s"""995561758104-2civgrjum3kij0fhj1h836rppi4jqg04.apps.googleusercontent.com"""
   val clientSecret = s"""rA7Gu4LIuYC2dPYvTUQk0B9x"""

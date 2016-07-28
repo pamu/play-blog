@@ -1,10 +1,13 @@
 @()
 
-<script>
-    r(function() {
-        if (window.location.href.indexOf('#') > 0) {
-            window.location = window.location.href.replace(/#/, 'cleaned?');
-        }
-    });
-    function r(f){/in/.test(document.readyState)?setTimeout('r('+f+')',9):f()}
- </script>
+@main("Rxcode") {
+
+    <script>
+        r(function() {
+            if (window.location.href.indexOf('#') > 0) {
+                window.location = window.location.href.replace(/#/, 'cleaned?');
+            }
+        });
+        function r(f){/in/.test(document.readyState)?setTimeout('r('+f+')',9):f()}
+    </script>
+}

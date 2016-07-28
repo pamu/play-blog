@@ -2,7 +2,7 @@ package models.repos
 
 import java.sql.Timestamp
 
-import models.ids._
+import services.ids._
 import org.joda.time.DateTime
 import services.models.{Email, NickName, Source}
 import slick.backend.DatabaseConfig
@@ -16,7 +16,7 @@ trait Mappings {
   implicit def dateTimeMapping = MappedColumnType.base[DateTime, Timestamp](
     { t: DateTime => new Timestamp(t.getMillis) }, { d: Timestamp => new DateTime(d.getTime) })
 
-  implicit def userIdMapping = MappedColumnType.base[UserId, Long](_.id, UserId(_))
+  implicit def userIdMapping = MappedColumnType.base[UserId, String](_.id, UserId(_))
 
   implicit def tagIdMapping = MappedColumnType.base[TypeTagId, Long](_.id, TypeTagId(_))
 

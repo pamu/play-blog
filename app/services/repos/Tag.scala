@@ -1,7 +1,7 @@
 package models.repos
 
+import services.ids._
 import com.google.inject.{Inject, Singleton}
-import models.ids.TypeTagId
 import play.api.db.slick.DatabaseConfigProvider
 import slick.driver.JdbcProfile
 

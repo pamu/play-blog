@@ -2,7 +2,7 @@ package models.repos
 
 import javax.inject.{Inject, Singleton}
 
-import models.ids.{BlogPostId, UserId}
+import services.ids._
 import org.joda.time.DateTime
 import play.api.db.slick.DatabaseConfigProvider
 import slick.driver.JdbcProfile
