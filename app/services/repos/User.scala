@@ -2,16 +2,15 @@ package services.repos
 
 import javax.inject.{Inject, Singleton}
 
-import services.ids.{LoginAttemptId, UserId}
 import org.joda.time.DateTime
 import play.api.db.slick.DatabaseConfigProvider
+import services.ids.UserId
 import services.models.{Email, NickName, Source}
 import slick.driver.JdbcProfile
 
 import scala.concurrent.ExecutionContext.Implicits.global
 
-case class User(loginAttemptId: LoginAttemptId,
-                nickName: NickName,
+case class User(nickName: NickName,
                 email: Email,
                 source: Source.Value,
                 createdAt: DateTime,
@@ -40,7 +39,7 @@ class UsersRepo @Inject()(protected val dbConfigProvider: DatabaseConfigProvider
     def email = column[Email]("EMAIL")
     def source = column[Source.Value]("SOURCE")
     def createdAt = column[DateTime]("CREATED_AT")
-    def * = (loginAttemptId, name, email, source, createdAt, id) <> (User.tupled, User.unapply)
+    def * = (name, email, source, createdAt, id) <> (User.tupled, User.unapply)
     def emailIndex = index("email_index", email, true)
   }
 

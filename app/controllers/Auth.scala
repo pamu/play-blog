@@ -7,6 +7,7 @@ import services.endpoints.GOAuthEndpoints
 import services.ids.UserId
 
 import scala.concurrent.Future
+import scala.concurrent.ExecutionContext.Implicits.global
 
 class Auth @Inject()(oAuthServices: OAuthServices,
                      gOAuthEndpoints: GOAuthEndpoints,
@@ -52,6 +53,7 @@ class Auth @Inject()(oAuthServices: OAuthServices,
 
   def oauth2callbackCleaned() = Action { req =>
     val qMap = req.queryString
+    
     if (qMap.contains("access_token")) {
       Redirect(routes.Application.index)
     } else {

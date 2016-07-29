@@ -26,17 +26,14 @@ case object UserInfoTable extends TableName("user_info_table")
 class Tables @Inject()(dbConfigProvider: DatabaseConfigProvider,
                        gistRepo: GistRepo,
                        blogPostRepo: BlogPostRepo,
-                       usersRepo: UsersRepo,
-                       loginAttemptRepo: LoginAttemptRepo) {
+                       usersRepo: UsersRepo) {
 
   private val dbConfig = dbConfigProvider.get[JdbcProfile]
 
   private val tables = List(
     UsersTable.name -> usersRepo.users,
     GistsTable.name -> gistRepo.gists,
-    BlogPostsTable.name -> blogPostRepo.blogPosts,
-    LoginAttemptsTable.name -> loginAttemptRepo.loginAttempts
-  )
+    BlogPostsTable.name -> blogPostRepo.blogPosts)
 
   def createTables(): Unit = {
     import dbConfig.driver.api._
