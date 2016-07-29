@@ -9,7 +9,6 @@ lazy val root = (project in file(".")).enablePlugins(PlayScala)
 libraryDependencies ++= Seq(
   jdbc,
   ws,
-
   "com.typesafe.play" %% "play-json" % "2.5.4",
   "com.typesafe.play" %% "play-ws" % "2.5.4",
   "com.typesafe.play" %% "play-slick" % "2.0.0",
