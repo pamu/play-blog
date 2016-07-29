@@ -2,13 +2,12 @@ package controllers
 
 import com.google.inject.Inject
 import play.api.mvc.Controller
-import models._
-import models.repos.UsersRepo
+import services.UserServices
 
 import scala.concurrent.Future
 
-class Application @Inject()(override val userRepo: UsersRepo) extends Controller
-  with UserRepoProvider
+class Application @Inject()(override val userServices: UserServices) extends Controller
+  with UserServicesProvider
   with Secured {
 
   def index = withUser(parse.anyContent) { user => req =>

@@ -2,18 +2,19 @@ package controllers
 
 import services.ids._
 import play.api.mvc._
-import models.repos.{User, UsersRepo}
+import services.UserServices
+import services.repos.User
 
 import scala.concurrent.Future
 import scala.util.{Failure, Success, Try}
 import scala.concurrent.ExecutionContext.Implicits.global
 
-trait UserRepoProvider {
-  val userRepo: UsersRepo
+trait UserServicesProvider {
+  val userServices: UserServices
 }
 
 trait Secured {
-  self: UserRepoProvider =>
+  self: UserServicesProvider =>
 
   def id(requestHeader: RequestHeader): Option[String] = {
     Try(requestHeader.session.get("id")) match {
@@ -30,7 +31,7 @@ trait Secured {
     }
 
   def withUser[A](p: BodyParser[A])(f: User => Request[A] => Future[Result]) = withAuth(p) { id => request =>
-    userRepo.findById(UserId(id)).flatMap { user => f(user)(request) }
+    userServices.findUserById(UserId(id)).flatMap { user => f(user)(request) }
       .recover { case th => Results.Redirect(routes.Auth.login).withNewSession }
   }
 

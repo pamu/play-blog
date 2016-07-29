@@ -1,4 +1,4 @@
-package models.repos
+package services.repos
 
 import services.ids._
 import com.google.inject.{Inject, Singleton}

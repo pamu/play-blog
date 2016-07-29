@@ -1,4 +1,4 @@
-package models.repos
+package services.repos
 
 import javax.inject.{Inject, Singleton}
 
@@ -6,8 +6,6 @@ import services.ids._
 import org.joda.time.DateTime
 import play.api.db.slick.DatabaseConfigProvider
 import slick.driver.JdbcProfile
-
-import scala.concurrent.Future
 
 case class BlogPost(userId: UserId, title: String, summary: String, createdAt: DateTime,
                     id: Option[BlogPostId] = None)
@@ -17,13 +15,8 @@ class BlogPostRepo @Inject()(protected val dbConfigProvider: DatabaseConfigProvi
                              val usersRepo: UsersRepo) extends Mappings {
   val dbConfig = dbConfigProvider.get[JdbcProfile]
   import dbConfig.driver.api._
-  val db = dbConfig.db
 
   val blogPosts = TableQuery[BlogPostTable]
-
-  def findById(blogPostId: BlogPostId): Future[Option[BlogPost]] = {
-    db.run(blogPosts.filter(_.id === blogPostId).result.headOption)
-  }
 
   class BlogPostTable(tag: Tag) extends Table[BlogPost](tag, BlogPostsTable.name) {
     def id = column[BlogPostId]("ID", O.AutoInc, O.PrimaryKey)

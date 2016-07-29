@@ -1,8 +1,8 @@
-package models.repos
+package services.repos
 
 import com.google.inject.{Inject, Singleton}
-import models.exceptions.TableNameNotFoundException
 import play.api.db.slick.DatabaseConfigProvider
+import services.exceptions.TableNameNotFoundException
 import slick.driver.JdbcProfile
 import slick.jdbc.meta.MTable
 
@@ -18,18 +18,24 @@ case object GistsTable extends TableName("gists")
 
 case object UsersTable extends TableName("users")
 
+case object LoginAttemptsTable extends TableName("loginattempts")
+
+case object UserInfoTable extends TableName("user_info_table")
+
 @Singleton
 class Tables @Inject()(dbConfigProvider: DatabaseConfigProvider,
                        gistRepo: GistRepo,
                        blogPostRepo: BlogPostRepo,
-                       usersRepo: UsersRepo) {
+                       usersRepo: UsersRepo,
+                       loginAttemptRepo: LoginAttemptRepo) {
 
   private val dbConfig = dbConfigProvider.get[JdbcProfile]
 
   private val tables = List(
     UsersTable.name -> usersRepo.users,
     GistsTable.name -> gistRepo.gists,
-    BlogPostsTable.name -> blogPostRepo.blogPosts
+    BlogPostsTable.name -> blogPostRepo.blogPosts,
+    LoginAttemptsTable.name -> loginAttemptRepo.loginAttempts
   )
 
   def createTables(): Unit = {

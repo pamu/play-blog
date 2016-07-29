@@ -1,10 +1,10 @@
-package models.repos
+package services.repos
 
 import java.sql.Timestamp
 
 import services.ids._
 import org.joda.time.DateTime
-import services.models.{Email, NickName, Source}
+import services.models._
 import slick.backend.DatabaseConfig
 import slick.driver.JdbcProfile
 
@@ -36,4 +36,6 @@ trait Mappings {
       case str if str == Source.FACEBOOK.toString => Source.FACEBOOK
       case str: String => Source.Other
     })
+
+  implicit def googleIdMapping = MappedColumnType.base[GoogleId, String](_.id, GoogleId(_))
 }
