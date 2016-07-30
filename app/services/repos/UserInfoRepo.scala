@@ -46,13 +46,15 @@ class UserInfoRepo @Inject()(databaseConfigProvider: DatabaseConfigProvider) ext
 
     def familyName = column[FamilyName]("family_name")
 
-    def link = column[Link]("link")
+    def link = column[Option[Link]]("link")
 
     def picture = column[Picture]("picture")
 
-    def gender = column[Gender]("gender")
+    def gender = column[Option[Gender]]("gender")
 
-    def * = (googleId, email, verifiedEmail, name, givenName, familyName, link, picture, gender) <> ((UserInfo.apply _).tupled, UserInfo.unapply)
+    def hd = column[Option[Hd]]("hd")
+
+    def * = (googleId, email, verifiedEmail, name, givenName, familyName, link, picture, gender, hd) <> ((UserInfo.apply _).tupled, UserInfo.unapply)
 
     def emailIndex = index("user_infos_email_index", email, true)
   }

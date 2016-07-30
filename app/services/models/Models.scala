@@ -20,15 +20,18 @@ case class Picture(link: String)
 
 case class Gender(gender: String)
 
+case class Hd(hd: String)
+
 case class UserInfo(googleId: GoogleId,
                     email: Email,
                     verifiedEmail: VerifiedEmail,
                     name: Name,
                     givenName: GivenName,
                     familyName: FamilyName,
-                    link: Link,
+                    link: Option[Link],
                     picture: Picture,
-                    gender: Gender)
+                    gender: Option[Gender],
+                    hd: Option[Hd])
 
 
 object UserInfo {
@@ -42,10 +45,11 @@ object UserInfo {
       (JsPath \ "name").read[String].map(Name(_)) and
       (JsPath \ "given_name").read[String].map(GivenName(_)) and
       (JsPath \ "family_name").read[String].map(FamilyName(_)) and
-      (JsPath \ "link").read[String].map(Link(_)) and
+      (JsPath \ "link").readNullable[String].map(_.map(Link(_))) and
       (JsPath \ "picture").read[String].map(Picture(_)) and
-      (JsPath \ "gender").read[String].map(Gender(_))) {
-      (id, email, verified_email, name, given_name, family_name, link, picture, gender) =>
+      (JsPath \ "gender").readNullable[String].map(_.map(Gender(_))) and
+      (JsPath \ "hd").readNullable[String].map(_.map(Hd(_)))) {
+      (id, email, verified_email, name, given_name, family_name, optLink, picture, optGender, optHd) =>
         UserInfo(
           id,
           email,
@@ -53,9 +57,10 @@ object UserInfo {
           name,
           given_name,
           family_name,
-          link,
+          optLink,
           picture,
-          gender
+          optGender,
+          optHd
         )
     }
   }

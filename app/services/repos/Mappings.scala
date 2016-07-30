@@ -50,4 +50,6 @@ trait Mappings {
   implicit def pictureMapping = MappedColumnType.base[Picture, String](_.link, Picture(_))
 
   implicit def genderMapping = MappedColumnType.base[Gender, String](_.gender, Gender(_))
+
+  implicit def hdMapping = MappedColumnType.base[Hd, String](_.hd, Hd(_))
 }
