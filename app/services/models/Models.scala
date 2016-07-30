@@ -60,8 +60,7 @@ object UserInfo {
           optLink,
           picture,
           optGender,
-          optHd
-        )
+          optHd)
     }
   }
 

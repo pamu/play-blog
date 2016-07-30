@@ -1,6 +1,7 @@
 package controllers
 
 import com.google.inject.Inject
+import play.api.Logger
 import play.api.mvc.{Action, Controller}
 import services.{OAuthServices, Sha1Services, UserServices}
 import services.endpoints.GOAuthEndpoints
@@ -67,7 +68,10 @@ class Auth @Inject()(oAuthServices: OAuthServices,
               userServices.onBoardUser(loginInfo).map { _ =>
                 Redirect(routes.Application.index)
               }.recover {
-                case th => Redirect(routes.Auth.oops())
+                case th =>
+                  th.printStackTrace
+                  Logger.error(s"""routing to index page failed ${th.getMessage}""")
+                  Redirect(routes.Auth.oops())
               }
             case AuthFailure => Future.successful(Redirect(routes.Auth.login()))
             case UnknownException(ex) => Future.successful(Redirect(routes.Auth.oops()))
