@@ -30,10 +30,10 @@ class Tables @Inject()(dbConfigProvider: DatabaseConfigProvider,
   private val dbConfig = dbConfigProvider.get[JdbcProfile]
 
   private val tables = List(
+    UserInfoTable.name -> userInfoRepo.userInfos,
     UsersTable.name -> usersRepo.users,
-    GistsTable.name -> gistRepo.gists,
     BlogPostsTable.name -> blogPostRepo.blogPosts,
-    UserInfoTable.name -> userInfoRepo.userInfos)
+    GistsTable.name -> gistRepo.gists)
 
   def createTables(): Unit = {
     import dbConfig.driver.api._
