@@ -18,7 +18,7 @@ class Auth @Inject()(oAuthServices: OAuthServices,
 
   def login = Action.async { req =>
     Logger.info("login action")
-    val optId = req.headers.get("id")
+    val optId = req.session.get("id")
     optId.map { id =>
       Logger.info("id present going to index")
       userServices.checkUserExists(UserId(id)).map { exists =>
