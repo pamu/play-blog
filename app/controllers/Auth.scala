@@ -78,13 +78,16 @@ class Auth @Inject()(oAuthServices: OAuthServices,
                 Redirect(routes.Application.index).withSession("id" -> userId.id)
               }.recover {
                 case th =>
-                  th.printStackTrace
+                  th.printStackTrace()
                   Logger.error(s"""routing to index page failed ${th.getMessage}""")
                   Redirect(routes.Auth.oops())
               }
             case AuthFailure =>
+              Logger.error("auth failure")
               Future.successful(Redirect(routes.Auth.login()).withNewSession)
-            case UnknownException(ex) => Future.successful(Redirect(routes.Auth.oops()))
+            case UnknownException(ex) =>
+              ex.printStackTrace()
+              Future.successful(Redirect(routes.Auth.oops()))
           }
         } else {
           Future.successful(Redirect(routes.Auth.oops()))

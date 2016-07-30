@@ -1,5 +1,6 @@
 package controllers
 
+import play.api.Logger
 import services.ids._
 import play.api.mvc._
 import services.UserServices
@@ -17,10 +18,9 @@ trait Secured {
   self: UserServicesProvider =>
 
   def id(requestHeader: RequestHeader): Option[String] = {
-    Try(requestHeader.session.get("id")) match {
-      case Success(optId) => optId
-      case Failure(th) => None
-    }
+    val opt = requestHeader.session.get("id")
+    Logger.info(s"""id: $opt""")
+    opt
   }
 
   def onUnauthorized(requestHeader: RequestHeader) = Results.Redirect(routes.Auth.login).withNewSession
