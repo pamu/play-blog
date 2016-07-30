@@ -18,22 +18,22 @@ case object GistsTable extends TableName("gists")
 
 case object UsersTable extends TableName("users")
 
-case object LoginAttemptsTable extends TableName("loginattempts")
-
 case object UserInfoTable extends TableName("user_info_table")
 
 @Singleton
 class Tables @Inject()(dbConfigProvider: DatabaseConfigProvider,
                        gistRepo: GistRepo,
                        blogPostRepo: BlogPostRepo,
-                       usersRepo: UsersRepo) {
+                       usersRepo: UsersRepo,
+                       userInfoRepo: UserInfoRepo) {
 
   private val dbConfig = dbConfigProvider.get[JdbcProfile]
 
   private val tables = List(
     UsersTable.name -> usersRepo.users,
     GistsTable.name -> gistRepo.gists,
-    BlogPostsTable.name -> blogPostRepo.blogPosts)
+    BlogPostsTable.name -> blogPostRepo.blogPosts,
+    UserInfoTable.name -> userInfoRepo.userInfos)
 
   def createTables(): Unit = {
     import dbConfig.driver.api._
