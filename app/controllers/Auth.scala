@@ -66,7 +66,7 @@ class Auth @Inject()(oAuthServices: OAuthServices,
           oAuthServices.getUserInfo(accessToken.get).flatMap {
             case LoginSuccess(loginInfo) =>
               userServices.onBoardUser(loginInfo).map { userId: UserId =>
-                Redirect(routes.Application.index).withNewSession.withSession("id" -> userId.id)
+                Redirect(routes.Application.index).withSession("id" -> userId.id)
               }.recover {
                 case th =>
                   th.printStackTrace
