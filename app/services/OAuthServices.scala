@@ -26,7 +26,7 @@ class GOAuthServicesImpl @Inject()(gOAuthEndpoints: GOAuthEndpoints, wsClient: W
         val payload = Json.parse(wsResponse.body)
         payload.validate[UserInfo] match {
           case JsSuccess(userInfo, _) => Future.successful(LoginSuccess(userInfo))
-          case error@JsError(errors) => Future.failed(ParseException("Errors while parsing the json payload into user info object"))
+          case error@JsError(errors) => Future.failed(ParseException(s"Errors while parsing the json payload into user info object: ${errors.mkString(" ")}"))
         }
       } else if (status == HttpStatus.SC_UNAUTHORIZED) {
         Future.successful(AuthFailure)
