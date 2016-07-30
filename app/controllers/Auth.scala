@@ -65,9 +65,7 @@ class Auth @Inject()(oAuthServices: OAuthServices,
   def oauth2callbackCleaned() = Action.async { req =>
     Logger.info("oauth2callbackcleaned action")
     val qMap = req.queryString
-    val optReqState: Option[String] = qMap.get("state").flatMap {
-      _.headOption
-    }
+    val optReqState: Option[String] = qMap.get("state").flatMap (_.headOption)
     val opSessionSate: Option[String] = req.session.data.get("state")
     optReqState -> opSessionSate match {
       case (Some(rState), Some(sState)) =>
