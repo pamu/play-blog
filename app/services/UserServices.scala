@@ -52,4 +52,5 @@ class UserServicesImpl @Inject()(databaseConfigProvider: DatabaseConfigProvider,
       case None => Future.failed(NoEntityFoundException("User with given id not found"))
     }
   }
+
 }

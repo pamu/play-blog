@@ -62,7 +62,6 @@ object UserInfo {
 
 }
 
-case class NickName(nameStr: String)
 
 object Source extends Enumeration {
   val GOOGLE, FACEBOOK, Other = Value

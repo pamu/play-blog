@@ -26,7 +26,7 @@ trait Mappings {
 
   implicit def githubIdMapping = MappedColumnType.base[GithubId, String](_.id, GithubId(_))
 
-  implicit def nickNameMapping = MappedColumnType.base[NickName, String](_.nameStr, NickName(_))
+  implicit def nameMapping = MappedColumnType.base[Name, String](_.nameStr, Name(_))
 
   implicit def emailMapping = MappedColumnType.base[Email, String](_.emailStr, Email(_))
 
@@ -38,4 +38,16 @@ trait Mappings {
     })
 
   implicit def googleIdMapping = MappedColumnType.base[GoogleId, String](_.id, GoogleId(_))
+
+  implicit def verifiedEmailMapping = MappedColumnType.base[VerifiedEmail, Boolean](_.verified, VerifiedEmail(_))
+
+  implicit def givenNameMapping = MappedColumnType.base[GivenName, String](_.givenNameStr, GivenName(_))
+
+  implicit def familyNameMapping = MappedColumnType.base[FamilyName, String](_.nameStr, FamilyName(_))
+
+  implicit def linkMapping = MappedColumnType.base[Link, String](_.link, Link(_))
+
+  implicit def pictureMapping = MappedColumnType.base[Picture, String](_.link, Picture(_))
+
+  implicit def genderMapping = MappedColumnType.base[Gender, String](_.gender, Gender(_))
 }

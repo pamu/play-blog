@@ -5,6 +5,7 @@ import play.api.mvc.{Action, Controller}
 import services.{OAuthServices, Sha1Services, UserServices}
 import services.endpoints.GOAuthEndpoints
 import services.ids.UserId
+import services.status.{AuthFailure, LoginSuccess, UnknownException}
 
 import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -51,14 +52,31 @@ class Auth @Inject()(oAuthServices: OAuthServices,
     Ok(views.html.oauth2callback())
   }
 
-  def oauth2callbackCleaned() = Action { req =>
+  def oauth2callbackCleaned() = Action.async { req =>
     val qMap = req.queryString
-    
-    if (qMap.contains("access_token")) {
-      Redirect(routes.Application.index)
-    } else {
-      Redirect(routes.Auth.login)
+    val optReqState: Option[String] = qMap.get("state").flatMap {
+      _.headOption
+    }
+    val opSessionSate: Option[String] = req.session.data.get("state")
+    optReqState -> opSessionSate match {
+      case (Some(rState), Some(sState)) =>
+        if (rState == sState) {
+          val accessToken = qMap.get("access_token").flatMap(_.headOption)
+          oAuthServices.getUserInfo(accessToken.get).map {
+            case LoginSuccess(loginInfo) =>
+
+              Redirect(routes.Application.index)
+            case AuthFailure => Redirect(routes.Auth.login())
+            case UnknownException(ex) => Redirect(routes.Auth.oops())
+          }
+        } else {
+          Future.successful(Redirect(routes.Auth.oops()))
+        }
+      case _ => Future.successful(Redirect(routes.Auth.oops()))
     }
   }
 
+  def oops = Action { req =>
+    Ok(views.html.oops())
+  }
 }
