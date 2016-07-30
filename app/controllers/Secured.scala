@@ -7,7 +7,6 @@ import services.UserServices
 import services.repos.User
 
 import scala.concurrent.Future
-import scala.util.{Failure, Success, Try}
 import scala.concurrent.ExecutionContext.Implicits.global
 
 trait UserServicesProvider {
@@ -23,7 +22,10 @@ trait Secured {
     opt
   }
 
-  def onUnauthorized(requestHeader: RequestHeader) = Results.Redirect(routes.Auth.login).withNewSession
+  def onUnauthorized(requestHeader: RequestHeader) = {
+    Logger.info("on unauthorised called")
+    Results.Redirect(routes.Auth.login).withNewSession
+  }
 
   def withAuth[A](p: BodyParser[A])(f: => String => Request[A] => Future[Result]) =
     Security.Authenticated(id, onUnauthorized) { id =>
@@ -32,7 +34,10 @@ trait Secured {
 
   def withUser[A](p: BodyParser[A])(f: User => Request[A] => Future[Result]) = withAuth(p) { id => request =>
     userServices.findUserById(UserId(id)).flatMap { user => f(user)(request) }
-      .recover { case th => Results.Redirect(routes.Auth.login).withNewSession }
+      .recover { case th =>
+        th.printStackTrace()
+        Results.Redirect(routes.Auth.login).withNewSession
+      }
   }
 
 }
