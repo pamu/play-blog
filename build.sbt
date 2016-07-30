@@ -13,7 +13,7 @@ libraryDependencies ++= Seq(
   "com.typesafe.play" %% "play-ws" % "2.5.4",
   "com.typesafe.play" %% "play-slick" % "2.0.0",
   "org.slf4j" % "slf4j-nop" % "1.6.4",
-  "postgresql" % "postgresql" % "9.1-901.jdbc4",
+  "postgresql" % "postgresql" % "9.3-1102-jdbc41",
   "joda-time" % "joda-time" % "2.9.4",
   "com.h2database" % "h2" % "1.4.192"
 )
