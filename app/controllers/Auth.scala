@@ -17,7 +17,7 @@ class Auth @Inject()(oAuthServices: OAuthServices,
                      userServices: UserServices) extends Controller {
 
   def login = Action.async { req =>
-    Logger.info("login action")
+    Logger.info(s"""login action ${req.session.data.mkString(" ")}""")
     val optId = req.session.get("id")
     optId.map { id =>
       Logger.info("id present going to index")
