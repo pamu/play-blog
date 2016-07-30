@@ -23,7 +23,7 @@ trait UserServices {
 
   def findUserById(id: UserId): Future[User]
 
-  def onBoardUser(userInfo: UserInfo): Future[_]
+  def onBoardUser(userInfo: UserInfo): Future[UserId]
 }
 
 @Singleton
@@ -56,7 +56,7 @@ class UserServicesImpl @Inject()(databaseConfigProvider: DatabaseConfigProvider,
     }
   }
 
-  override def onBoardUser(userInfo: UserInfo): Future[_] = {
+  override def onBoardUser(userInfo: UserInfo): Future[UserId] = {
     db.run {
       (for {
         status <- userInfoRepo.upsert(userInfo)

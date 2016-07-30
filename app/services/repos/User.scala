@@ -33,13 +33,16 @@ class UsersRepo @Inject()(protected val dbConfigProvider: DatabaseConfigProvider
     } yield optUser
   }
 
-  def insert(user: User): DBIO[Int]  = {
+  def insert(user: User): DBIO[UserId]  = {
     for {
       exists <- users.filter(_.email === user.email).exists.result
       result <- if (exists) {
-        DBIO.successful(0)
+        DBIO.successful(user.id)
       } else {
-        users += user
+        for {
+          _ <- users += user
+          result <- DBIO.successful(user.id)
+        } yield result
       }
     } yield result
   }
