@@ -23,7 +23,7 @@ trait Secured {
     }
   }
 
-  def onUnauthorized(requestHeader: RequestHeader) = Results.Redirect(routes.Auth.login)
+  def onUnauthorized(requestHeader: RequestHeader) = Results.Redirect(routes.Auth.login).withNewSession
 
   def withAuth[A](p: BodyParser[A])(f: => String => Request[A] => Future[Result]) =
     Security.Authenticated(id, onUnauthorized) { id =>

@@ -27,7 +27,7 @@ class Auth @Inject()(oAuthServices: OAuthServices,
           Redirect(routes.Application.index).withSession("id" -> id)
         }
         else {
-          Logger.info("no id present going to oauth2")
+          Logger.info("no user present going to oauth2")
           val key = sha1Services.sha1(System.nanoTime().toString)
           Redirect(routes.Auth.oauth2(key)).withNewSession
         }
