@@ -45,7 +45,7 @@ class UsersRepo @Inject()(protected val dbConfigProvider: DatabaseConfigProvider
   }
 
   class Users(tag: Tag) extends Table[User](tag, UsersTable.name) {
-    def id = column[UserId]("USER_ID")
+    def id = column[UserId]("USER_ID", O.PrimaryKey)
 
     def email = column[Email]("EMAIL")
 
@@ -55,7 +55,7 @@ class UsersRepo @Inject()(protected val dbConfigProvider: DatabaseConfigProvider
 
     def * = (email, source, createdAt, id) <> (User.tupled, User.unapply)
 
-    def emailIndex = index("email_index", email, true)
+    def emailIndex = index("users_email_index", email, true)
   }
 
 }
