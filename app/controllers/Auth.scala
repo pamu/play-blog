@@ -17,7 +17,7 @@ class Auth @Inject()(oAuthServices: OAuthServices,
                      userServices: UserServices) extends Controller {
 
   def login = Action.async { req =>
-    Logger.info(s"""login action ${req.session.data.mkString(" ")}""")
+    Logger.info(s"""login action, session contents: ${req.session.data.mkString(" ")}""")
     val optId = req.session.get("id")
     optId.map { id =>
       Logger.info("id present going to index")
@@ -33,7 +33,7 @@ class Auth @Inject()(oAuthServices: OAuthServices,
         }
       }
     }.getOrElse {
-      Logger.info("no id present going to oauth2")
+      Logger.info(s"""no id present going to oauth2, session contents: ${req.session.data.mkString(" ")}""")
       val key = sha1Services.sha1(System.nanoTime().toString)
       Future.successful(Redirect(routes.Auth.oauth2(key)).withNewSession)
     }

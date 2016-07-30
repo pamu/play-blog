@@ -1,7 +1,5 @@
 package services
 
-import java.security.MessageDigest
-
 import com.google.inject.{ImplementedBy, Inject, Singleton}
 import org.joda.time.{DateTime, DateTimeZone}
 import play.api.db.slick.DatabaseConfigProvider
@@ -35,10 +33,7 @@ class UserServicesImpl @Inject()(databaseConfigProvider: DatabaseConfigProvider,
   val db = dbConfig.db
 
   override def generateUserId(name: Name): UserId = {
-    val crypt = MessageDigest.getInstance("SHA-1")
-    crypt.reset()
-    crypt.update(name.nameStr.getBytes("UTF-8"))
-    UserId(s"""${new String(crypt.digest())}${System.nanoTime()}""")
+    UserId(s"""${name.nameStr}${System.nanoTime()}""")
   }
 
   override def checkUserExists(id: UserId): Future[Boolean] = {
