@@ -1,8 +1,8 @@
 package services.repos
 
 import com.google.inject.{Inject, Singleton}
+import play.api.Logger
 import play.api.db.slick.DatabaseConfigProvider
-import services.exceptions.TableNameNotFoundException
 import slick.driver.JdbcProfile
 import slick.jdbc.meta.MTable
 
@@ -40,12 +40,19 @@ class Tables @Inject()(dbConfigProvider: DatabaseConfigProvider,
     val db = dbConfig.db
     val actions =
       tables.map { case (name, table) =>
-        MTable.getTables(name).headOption.flatMap {
-          case Some(table) => DBIO.successful(table.name)
-          case None => DBIO.failed(TableNameNotFoundException)
-        }.flatMap { _ =>
-          val action: DBIO[Unit] = table.schema.create
-          action
+        MTable.getTables(name).headOption.map {
+          case Some(table) =>
+            Logger.info(s"sql table ${table.name} exists.")
+            true
+          case None =>
+            Logger.info(s"""sql table ${name} doesn't exist.""")
+            false
+        }.flatMap { exists =>
+          if (! exists) {
+            val action: DBIO[Unit] = table.schema.create
+            Logger.info(s"""creating table ${name}.""")
+            action
+          } else DBIO.successful(0)
         }.transactionally
       }
     val f = db.run(DBIO.sequence(actions).transactionally)
