@@ -2,6 +2,7 @@ package services
 
 import com.google.inject.{ImplementedBy, Inject, Singleton}
 import org.apache.http.HttpStatus
+import play.api.Logger
 import play.api.libs.json.{JsError, JsSuccess, Json}
 import play.api.libs.ws.WSClient
 import services.endpoints.GOAuthEndpoints
@@ -23,6 +24,7 @@ class GOAuthServicesImpl @Inject()(gOAuthEndpoints: GOAuthEndpoints, wsClient: W
     wsClient.url(gOAuthEndpoints.userInfoURL(accessToken)).get().flatMap { wsResponse =>
       val status = wsResponse.status
       if (status == HttpStatus.SC_OK) {
+        Logger.info(s"""response body as string: ${wsResponse.body}""")
         val payload = Json.parse(wsResponse.body)
         payload.validate[UserInfo] match {
           case JsSuccess(userInfo, _) => Future.successful(LoginSuccess(userInfo))
