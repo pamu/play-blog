@@ -62,12 +62,15 @@ class Auth @Inject()(oAuthServices: OAuthServices,
       case (Some(rState), Some(sState)) =>
         if (rState == sState) {
           val accessToken = qMap.get("access_token").flatMap(_.headOption)
-          oAuthServices.getUserInfo(accessToken.get).map {
+          oAuthServices.getUserInfo(accessToken.get).flatMap {
             case LoginSuccess(loginInfo) =>
-
-              Redirect(routes.Application.index)
-            case AuthFailure => Redirect(routes.Auth.login())
-            case UnknownException(ex) => Redirect(routes.Auth.oops())
+              userServices.onBoardUser(loginInfo).map { _ =>
+                Redirect(routes.Application.index)
+              }.recover {
+                case th => Redirect(routes.Auth.oops())
+              }
+            case AuthFailure => Future.successful(Redirect(routes.Auth.login()))
+            case UnknownException(ex) => Future.successful(Redirect(routes.Auth.oops()))
           }
         } else {
           Future.successful(Redirect(routes.Auth.oops()))

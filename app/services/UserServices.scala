@@ -3,11 +3,12 @@ package services
 import java.security.MessageDigest
 
 import com.google.inject.{ImplementedBy, Inject, Singleton}
+import org.joda.time.{DateTime, DateTimeZone}
 import play.api.db.slick.DatabaseConfigProvider
 import services.exceptions.NoEntityFoundException
 import services.ids.UserId
-import services.models.Name
-import services.repos.{User, UsersRepo}
+import services.models.{Name, Source, UserInfo}
+import services.repos.{User, UserInfoRepo, UsersRepo}
 import slick.driver.JdbcProfile
 
 import scala.concurrent.Future
@@ -16,26 +17,28 @@ import scala.concurrent.ExecutionContext.Implicits.global
 
 @ImplementedBy(classOf[UserServicesImpl])
 trait UserServices {
-  def generateUserId(name: Name): Future[UserId]
+  def generateUserId(name: Name): UserId
 
   def checkUserExists(id: UserId): Future[Boolean]
 
   def findUserById(id: UserId): Future[User]
+
+  def onBoardUser(userInfo: UserInfo): Future[_]
 }
 
 @Singleton
 class UserServicesImpl @Inject()(databaseConfigProvider: DatabaseConfigProvider,
-                                 usersRepo: UsersRepo) extends UserServices {
+                                 usersRepo: UsersRepo,
+                                 userInfoRepo: UserInfoRepo) extends UserServices {
   val dbConfig = databaseConfigProvider.get[JdbcProfile]
+  import dbConfig.driver.api._
   val db = dbConfig.db
 
-  override def generateUserId(name: Name): Future[UserId] = {
-    Future.successful {
-      val crypt = MessageDigest.getInstance("SHA-1")
-      crypt.reset()
-      crypt.update(name.nameStr.getBytes("UTF-8"))
-      UserId(s"""${new String(crypt.digest())}${System.nanoTime()}""")
-    }
+  override def generateUserId(name: Name): UserId = {
+    val crypt = MessageDigest.getInstance("SHA-1")
+    crypt.reset()
+    crypt.update(name.nameStr.getBytes("UTF-8"))
+    UserId(s"""${new String(crypt.digest())}${System.nanoTime()}""")
   }
 
   override def checkUserExists(id: UserId): Future[Boolean] = {
@@ -53,4 +56,13 @@ class UserServicesImpl @Inject()(databaseConfigProvider: DatabaseConfigProvider,
     }
   }
 
+  override def onBoardUser(userInfo: UserInfo): Future[_] = {
+    db.run {
+      (for {
+        status <- userInfoRepo.upsert(userInfo)
+        result <- usersRepo.insert(User(userInfo.email, Source.GOOGLE, DateTime.now(DateTimeZone.UTC),
+          generateUserId(userInfo.name)))
+      } yield result).transactionally
+    }
+  }
 }
