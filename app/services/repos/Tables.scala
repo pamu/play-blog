@@ -22,13 +22,16 @@ case object UserInfoTable extends TableName("user_info_table")
 
 case object TypeTagTable extends TableName("type_tag_table")
 
+case object BlogPostTagsTable extends TableName("blog_post_tags_table")
+
 @Singleton
 class Tables @Inject()(dbConfigProvider: DatabaseConfigProvider,
                        gistRepo: GistRepo,
                        blogPostRepo: BlogPostRepo,
                        usersRepo: UsersRepo,
                        userInfoRepo: UserInfoRepo,
-                       typeTagRepo: TypeTagRepo) {
+                       typeTagRepo: TypeTagRepo,
+                       blogPostTagsRepo: BlogPostTagsRepo) {
 
   private val dbConfig = dbConfigProvider.get[JdbcProfile]
 
@@ -37,6 +40,7 @@ class Tables @Inject()(dbConfigProvider: DatabaseConfigProvider,
     UsersTable.name -> usersRepo.users,
     UserInfoTable.name -> typeTagRepo.typeTags,
     BlogPostsTable.name -> blogPostRepo.blogPosts,
+    TypeTagTable.name -> blogPostTagsRepo.blogPostTags,
     GistsTable.name -> gistRepo.gists)
 
   def createTables(): Unit = {

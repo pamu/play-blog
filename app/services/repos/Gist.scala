@@ -16,10 +16,9 @@ class GistRepo @Inject()(protected val dbConfigProvider: DatabaseConfigProvider,
 
   val dbConfig = dbConfigProvider.get[JdbcProfile]
   import dbConfig.driver.api._
-  val db = dbConfig.db
-  val gists = TableQuery[GistTable]
+  private[services] val gists = TableQuery[GistTable]
 
-  class GistTable(tag: Tag) extends Table[Gist](tag, GistsTable.name) {
+  private[services] class GistTable(tag: Tag) extends Table[Gist](tag, GistsTable.name) {
     def blogPostId = column[BlogPostId]("BLOG_POST_ID")
     def title = column[Option[String]]("TITLE")
     def summary = column[Option[String]]("Summary")

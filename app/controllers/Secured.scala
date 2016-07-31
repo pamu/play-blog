@@ -14,7 +14,7 @@ trait UserServicesProvider {
 }
 
 trait Secured {
-  self: UserServicesProvider =>
+  self: Controller with UserServicesProvider =>
 
   def id(requestHeader: RequestHeader): Option[String] = {
     val opt = requestHeader.session.get("id")

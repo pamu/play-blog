@@ -54,4 +54,6 @@ trait Mappings {
   implicit def hdMapping = MappedColumnType.base[Hd, String](_.hd, Hd(_))
 
   implicit def typeTagNameMapping = MappedColumnType.base[TypeTagName, String](_.name, TypeTagName(_))
+
+  implicit def blogPostTagIdMapping = MappedColumnType.base[BlogPostTagId, Long](_.id, BlogPostTagId(_))
 }

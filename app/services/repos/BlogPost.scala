@@ -16,9 +16,9 @@ class BlogPostRepo @Inject()(protected val dbConfigProvider: DatabaseConfigProvi
   val dbConfig = dbConfigProvider.get[JdbcProfile]
   import dbConfig.driver.api._
 
-  val blogPosts = TableQuery[BlogPostTable]
+  private[services] val blogPosts = TableQuery[BlogPostTable]
 
-  class BlogPostTable(tag: Tag) extends Table[BlogPost](tag, BlogPostsTable.name) {
+  private[services] class BlogPostTable(tag: Tag) extends Table[BlogPost](tag, BlogPostsTable.name) {
     def id = column[BlogPostId]("ID", O.AutoInc, O.PrimaryKey)
     def userId = column[UserId]("USER_ID")
     def title = column[String]("TITLE")

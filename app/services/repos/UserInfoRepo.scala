@@ -13,7 +13,7 @@ class UserInfoRepo @Inject()(databaseConfigProvider: DatabaseConfigProvider) ext
 
   import dbConfig.driver.api._
 
-  val userInfos = TableQuery[UserInfos]
+  private[services] val userInfos = TableQuery[UserInfos]
 
   def upsert(userInfo: UserInfo): DBIO[Int] = {
     val q = userInfos.filter(_.email === userInfo.email)
@@ -33,7 +33,13 @@ class UserInfoRepo @Inject()(databaseConfigProvider: DatabaseConfigProvider) ext
     } yield result
   }
 
-  class UserInfos(tag: Tag) extends Table[UserInfo](tag, UserInfoTable.name) {
+  def getUserInfo(email: Email): DBIO[Option[UserInfo]] = {
+    for {
+      result <- userInfos.filter(_.email === email).result.headOption
+    } yield result
+  }
+
+  private[services] class UserInfos(tag: Tag) extends Table[UserInfo](tag, UserInfoTable.name) {
     def googleId = column[GoogleId]("google_id")
 
     def email = column[Email]("email")

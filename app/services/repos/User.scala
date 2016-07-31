@@ -21,7 +21,7 @@ class UsersRepo @Inject()(protected val dbConfigProvider: DatabaseConfigProvider
 
   import dbConfig.driver.api._
 
-  val users = TableQuery[Users]
+  private[services] val users = TableQuery[Users]
 
   def exists(id: UserId): DBIO[Boolean] = {
     users.filter(_.id === id).exists.result
@@ -49,7 +49,13 @@ class UsersRepo @Inject()(protected val dbConfigProvider: DatabaseConfigProvider
     } yield result
   }
 
-  class Users(tag: Tag) extends Table[User](tag, UsersTable.name) {
+  def getEmail(id: UserId): DBIO[Option[Email]] = {
+    for {
+      result <- users.filter(_.id === id).map(_.email).result.headOption
+    } yield result
+  }
+
+  private[services] class Users(tag: Tag) extends Table[User](tag, UsersTable.name) {
     def id = column[UserId]("USER_ID", O.PrimaryKey)
 
     def email = column[Email]("EMAIL")

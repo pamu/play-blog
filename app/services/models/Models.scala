@@ -64,6 +64,14 @@ object UserInfo {
     }
   }
 
+  implicit val writes: Writes[UserInfo] = new Writes[UserInfo] {
+    override def writes(o: UserInfo): JsValue = Json.obj(
+      "picture" -> o.picture.link,
+      "name" -> o.name.nameStr,
+      "family_name" -> o.familyName.nameStr
+    )
+  }
+
 }
 
 

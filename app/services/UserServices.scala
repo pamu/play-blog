@@ -5,7 +5,7 @@ import org.joda.time.{DateTime, DateTimeZone}
 import play.api.db.slick.DatabaseConfigProvider
 import services.exceptions.NoEntityFoundException
 import services.ids.UserId
-import services.models.{Name, Source, UserInfo}
+import services.models.{Email, Name, Source, UserInfo}
 import services.repos.{User, UserInfoRepo, UsersRepo}
 import slick.driver.JdbcProfile
 
@@ -22,6 +22,8 @@ trait UserServices {
   def findUserById(id: UserId): Future[User]
 
   def onBoardUser(userInfo: UserInfo): Future[UserId]
+
+  def getUserInfo(email: Email): Future[Option[UserInfo]]
 }
 
 @Singleton
@@ -29,7 +31,9 @@ class UserServicesImpl @Inject()(databaseConfigProvider: DatabaseConfigProvider,
                                  usersRepo: UsersRepo,
                                  userInfoRepo: UserInfoRepo) extends UserServices {
   val dbConfig = databaseConfigProvider.get[JdbcProfile]
+
   import dbConfig.driver.api._
+
   val db = dbConfig.db
 
   override def generateUserId(name: Name): UserId = {
@@ -60,4 +64,14 @@ class UserServicesImpl @Inject()(databaseConfigProvider: DatabaseConfigProvider,
       } yield result).transactionally
     }
   }
+
+  override def getUserInfo(email: Email): Future[Option[UserInfo]] = {
+    db.run {
+      (for {
+        result <- userInfoRepo.getUserInfo(email)
+      } yield result).transactionally
+    }
+  }
+
+
 }
