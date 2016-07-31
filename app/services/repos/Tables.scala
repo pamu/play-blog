@@ -38,9 +38,9 @@ class Tables @Inject()(dbConfigProvider: DatabaseConfigProvider,
   private val tables = List(
     UserInfoTable.name -> userInfoRepo.userInfos,
     UsersTable.name -> usersRepo.users,
-    UserInfoTable.name -> typeTagRepo.typeTags,
     BlogPostsTable.name -> blogPostRepo.blogPosts,
-    TypeTagTable.name -> blogPostTagsRepo.blogPostTags,
+    TypeTagTable.name -> typeTagRepo.typeTags,
+    BlogPostTagsTable.name -> blogPostTagsRepo.blogPostTags,
     GistsTable.name -> gistRepo.gists)
 
   def createTables(): Unit = {
