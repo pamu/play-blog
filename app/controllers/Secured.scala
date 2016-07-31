@@ -36,6 +36,7 @@ trait Secured {
     userServices.findUserById(UserId(id)).flatMap { user => f(user)(request) }
       .recover { case th =>
         th.printStackTrace()
+        Logger.error(s"finding the user byi id $id failed.")
         Results.Redirect(routes.Auth.login).withNewSession
       }
   }
