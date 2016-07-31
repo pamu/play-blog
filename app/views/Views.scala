@@ -1,7 +1,9 @@
 package views
 
+import play.twirl.api.Html
+
 object Views {
-  def getLoaderHtml: String =
+  def getLoaderHtml: Html = Html {
     s"""
        |<div class="preloader-wrapper big active">
        |    <div class="spinner-layer spinner-blue-only">
@@ -16,4 +18,5 @@ object Views {
        |  </div>
        |
      """.stripMargin
+  }
 }
