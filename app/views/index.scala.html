@@ -1,6 +1,10 @@
 @()
 
 @main("Pure Code") {
-
+    <div id="preloader" class="row">
+        <div class="center-align" style="position: absolute; left: 50%; top: 50%;">
+            @{views.Views.getLoaderHtml}
+        </div>
+    </div>
 }
 

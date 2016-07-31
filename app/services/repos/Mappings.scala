@@ -52,4 +52,6 @@ trait Mappings {
   implicit def genderMapping = MappedColumnType.base[Gender, String](_.gender, Gender(_))
 
   implicit def hdMapping = MappedColumnType.base[Hd, String](_.hd, Hd(_))
+
+  implicit def typeTagNameMapping = MappedColumnType.base[TypeTagName, String](_.name, TypeTagName(_))
 }

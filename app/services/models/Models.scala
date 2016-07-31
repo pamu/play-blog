@@ -71,4 +71,4 @@ object Source extends Enumeration {
   val GOOGLE, FACEBOOK, Other = Value
 }
 
-case class LoginAttemptKey(key: String)
+case class TypeTagName(name: String)
