@@ -3,6 +3,7 @@ package views
 import play.twirl.api.Html
 
 object Views {
+
   def getLoaderHtml: Html = Html {
     s"""
        |<div class="preloader-wrapper big active">
@@ -19,4 +20,11 @@ object Views {
        |
      """.stripMargin
   }
+
+  def gmailButton: Html = Html {
+    s"""
+      |<a id="gmail_signin" class="waves-effect waves-light btn deep-purple"><i class="material-icons left">mail</i>Signin with Gmail</a>
+    """.stripMargin
+  }
+
 }

@@ -5,16 +5,18 @@
 #Auth Controller
 
 GET     /login                           controllers.Auth.login
+GET     /initiateLogin                   controllers.Auth.initiateLogin
 GET     /oauth2                          controllers.Auth.oauth2(state: String)
 GET     /oauth2callback                  controllers.Auth.oauth2callback()
 GET     /oauth2callbackcleaned           controllers.Auth.oauth2callbackCleaned()
 GET     /oops                            controllers.Auth.oops()
+GET     /logout                          controllers.Auth.logout
 
 #Application Controller
 GET     /                                controllers.Application.index
 
 #ApiController v1
-POST    /api/v1/profile                  controllers.ApiController.profile
+GET    /api/v1/profile                  controllers.ApiController.profile
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)

@@ -16,6 +16,8 @@ trait Mappings {
   implicit def dateTimeMapping = MappedColumnType.base[DateTime, Timestamp](
     { t: DateTime => new Timestamp(t.getMillis) }, { d: Timestamp => new DateTime(d.getTime) })
 
+  implicit def profileNameMapping = MappedColumnType.base[ProfileName, String](_.name, ProfileName)
+
   implicit def userIdMapping = MappedColumnType.base[UserId, String](_.id, UserId(_))
 
   implicit def tagIdMapping = MappedColumnType.base[TypeTagId, Long](_.id, TypeTagId(_))

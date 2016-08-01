@@ -5,7 +5,7 @@ import org.joda.time.{DateTime, DateTimeZone}
 import play.api.db.slick.DatabaseConfigProvider
 import services.exceptions.NoEntityFoundException
 import services.ids.UserId
-import services.models.{Email, Name, Source, UserInfo}
+import services.models._
 import services.repos.{User, UserInfoRepo, UsersRepo}
 import slick.driver.JdbcProfile
 
@@ -59,7 +59,7 @@ class UserServicesImpl @Inject()(databaseConfigProvider: DatabaseConfigProvider,
     db.run {
       (for {
         status <- userInfoRepo.upsert(userInfo)
-        result <- usersRepo.insert(User(userInfo.email, Source.GOOGLE, DateTime.now(DateTimeZone.UTC),
+        result <- usersRepo.insert(User(ProfileName(userInfo.name.nameStr.replaceAll("\\s+", "-")), userInfo.email, Source.GOOGLE, DateTime.now(DateTimeZone.UTC),
           generateUserId(userInfo.name)))
       } yield result).transactionally
     }

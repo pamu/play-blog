@@ -1,6 +1,10 @@
 @()
 
 @main("Pure Code") {
+    <script type="text/javascript" src='@routes.Assets.versioned("js/login.js")'></script>
     <div class="row">
+        <div class="center-align" style="position: absolute; left: 40%; top: 40%;">
+            @{views.Views.gmailButton}
+        </div>
     </div>
 }

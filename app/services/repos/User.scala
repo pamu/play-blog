@@ -5,12 +5,13 @@ import javax.inject.{Inject, Singleton}
 import org.joda.time.DateTime
 import play.api.db.slick.DatabaseConfigProvider
 import services.ids.UserId
-import services.models.{Email, Source}
+import services.models.{Email, ProfileName, Source}
 import slick.driver.JdbcProfile
 
 import scala.concurrent.ExecutionContext.Implicits.global
 
-case class User(email: Email,
+case class User(profileName: ProfileName,
+                email: Email,
                 source: Source.Value,
                 createdAt: DateTime,
                 id: UserId)
@@ -33,7 +34,7 @@ class UsersRepo @Inject()(protected val dbConfigProvider: DatabaseConfigProvider
     } yield optUser
   }
 
-  def insert(user: User): DBIO[UserId]  = {
+  def insert(user: User): DBIO[UserId] = {
     for {
       exists <- users.filter(_.email === user.email).exists.result
       existingUser: User <- users.filter(_.email === user.email).result.head
@@ -56,15 +57,16 @@ class UsersRepo @Inject()(protected val dbConfigProvider: DatabaseConfigProvider
   }
 
   private[services] class Users(tag: Tag) extends Table[User](tag, UsersTable.name) {
-    def id = column[UserId]("USER_ID", O.PrimaryKey)
+    def profileName = column[ProfileName]("profile_name")
+    def id = column[UserId]("user_id", O.PrimaryKey)
 
-    def email = column[Email]("EMAIL")
+    def email = column[Email]("email")
 
-    def source = column[Source.Value]("SOURCE")
+    def source = column[Source.Value]("source")
 
-    def createdAt = column[DateTime]("CREATED_AT")
+    def createdAt = column[DateTime]("created_at")
 
-    def * = (email, source, createdAt, id) <> (User.tupled, User.unapply)
+    def * = (profileName, email, source, createdAt, id) <> (User.tupled, User.unapply)
 
     def emailIndex = index("users_email_index", email, true)
   }

@@ -2,6 +2,8 @@ package services.models
 
 import play.api.libs.json._
 
+case class ProfileName(name: String)
+
 case class Email(emailStr: String)
 
 case class Name(nameStr: String)

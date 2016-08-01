@@ -20,6 +20,16 @@ class Auth @Inject()(oAuthServices: OAuthServices,
     Logger.info(s"""login action, session contents: ${req.session.data.mkString(" ")}""")
     val optId = req.session.get("id")
     optId.map { id =>
+      Future.successful(Redirect(routes.Auth.initiateLogin))
+    }.getOrElse {
+      Future.successful(Ok(views.html.login()))
+    }
+  }
+
+  def initiateLogin = Action.async { req =>
+    Logger.info(s"""initiate login, session contents: ${req.session.data.mkString(" ")}""")
+    val optId = req.session.get("id")
+    optId.map { id =>
       Logger.info("id present going to index")
       userServices.checkUserExists(UserId(id)).map { exists =>
         if (exists) {
@@ -99,5 +109,9 @@ class Auth @Inject()(oAuthServices: OAuthServices,
   def oops = Action { req =>
     Logger.info("oops action")
     Ok(views.html.oops())
+  }
+
+  def logout = Action {
+    Redirect(routes.Auth.login).withNewSession
   }
 }
