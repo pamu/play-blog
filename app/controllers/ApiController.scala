@@ -1,7 +1,6 @@
 package controllers
 
 import com.google.inject.{Inject, Singleton}
-import controllers.mock.MockSecured
 import play.api.libs.json.{JsValue, Json, Writes}
 import play.api.mvc.Controller
 import services.UserServices
@@ -14,7 +13,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 @Singleton
 class ApiController @Inject()(override val userServices: UserServices) extends Controller
   with UserServicesProvider
-  with MockSecured {
+  with Secured {
 
   def profile = withUser(parse.anyContent) { user => req =>
     for {

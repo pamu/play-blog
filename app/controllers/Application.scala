@@ -10,7 +10,7 @@ import scala.concurrent.Future
 
 class Application @Inject()(override val userServices: UserServices) extends Controller
   with UserServicesProvider
-  with MockSecured {
+  with Secured {
 
   def index = withUser(parse.anyContent) { user => req =>
     Logger.info("going to index")
