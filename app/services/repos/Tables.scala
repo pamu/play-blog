@@ -6,7 +6,7 @@ import play.api.db.slick.DatabaseConfigProvider
 import slick.driver.JdbcProfile
 import slick.jdbc.meta.MTable
 
-import scala.concurrent.Await
+import scala.concurrent.{Await, Future}
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration.Duration
 
@@ -44,6 +44,11 @@ class Tables @Inject()(dbConfigProvider: DatabaseConfigProvider,
     GistsTable.name -> gistRepo.gists)
 
   def createTables(): Unit = {
+    val f: Future[_] = createTablesFuture()
+    Await.result(f, Duration.Inf)
+  }
+
+  def createTablesFuture(): Future[_] = {
     import dbConfig.driver.api._
     val db = dbConfig.db
     val actions =
@@ -56,15 +61,36 @@ class Tables @Inject()(dbConfigProvider: DatabaseConfigProvider,
             Logger.info(s"""sql table ${name} doesn't exist.""")
             false
         }.flatMap { exists =>
-          if (! exists) {
+          if (!exists) {
             val action: DBIO[Unit] = table.schema.create
             Logger.info(s"""creating table ${name}.""")
             action
-          } else DBIO.successful(0)
+          } else DBIO.successful(Unit)
         }.transactionally
       }
+    val f: Future[_] = db.run(DBIO.sequence(actions).transactionally)
+    f
+  }
+
+  def dropTablesFuture(): Future[_] = {
+    import dbConfig.driver.api._
+    val db = dbConfig.db
+
+    val actions =
+      tables.reverse.map { case (name, table) =>
+        MTable.getTables(name).headOption.map {
+          case Some(table) => true
+          case None => false
+        }.flatMap { exists =>
+          if (exists) {
+            val dBIO: DBIO[Unit] = table.schema.drop
+            dBIO
+          } else DBIO.successful(Unit)
+        }
+      }
+
     val f = db.run(DBIO.sequence(actions).transactionally)
-    Await.result(f, Duration.Inf)
+    f
   }
 
 }
