@@ -36,15 +36,13 @@ class UsersRepo @Inject()(protected val dbConfigProvider: DatabaseConfigProvider
 
   def insert(user: User): DBIO[UserId] = {
     for {
-      exists <- users.filter(_.email === user.email).exists.result
-      existingUser: User <- users.filter(_.email === user.email).result.head
-      result <- if (exists) {
-        DBIO.successful(existingUser.id)
-      } else {
+      optUser <- users.filter(_.email === user.email).result.headOption
+      result <- optUser.map { user =>
+        DBIO.successful(user.id)
+      }.getOrElse {
         for {
-          _ <- users += user
-          existingUser: User <- users.filter(_.email === user.email).result.head
-          result <- DBIO.successful(existingUser.id)
+          status <- users += user
+          result <- DBIO.successful(user.id)
         } yield result
       }
     } yield result
@@ -58,6 +56,7 @@ class UsersRepo @Inject()(protected val dbConfigProvider: DatabaseConfigProvider
 
   private[services] class Users(tag: Tag) extends Table[User](tag, UsersTable.name) {
     def profileName = column[ProfileName]("profile_name")
+
     def id = column[UserId]("user_id", O.PrimaryKey)
 
     def email = column[Email]("email")
