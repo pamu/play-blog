@@ -54,6 +54,18 @@ class UsersRepo @Inject()(protected val dbConfigProvider: DatabaseConfigProvider
     } yield result
   }
 
+  def getProfileName(id: UserId): DBIO[Option[ProfileName]] = {
+    for {
+      result <- users.filter(_.id === id).map(_.profileName).result.headOption
+    } yield result
+  }
+
+  def setProfileName(id: UserId, profileName: ProfileName): DBIO[Int] = {
+    for {
+      result <- users.filter(_.id === id).map(_.profileName).update(profileName)
+    } yield result
+  }
+
   private[services] class Users(tag: Tag) extends Table[User](tag, UsersTable.name) {
     def profileName = column[ProfileName]("profile_name")
 
