@@ -27,5 +27,10 @@ class Application @Inject()(override val userServices: UserServices) extends Con
     }
   }
 
+  def editor = withUser(parse.anyContent) { user => req =>
+    Logger.info("editor action")
+    Future.successful(Ok(views.html.editor()))
+  }
+
 }
 
