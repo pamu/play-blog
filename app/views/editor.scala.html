@@ -1,14 +1,13 @@
 @()
 
 @main(""){
-    <div class="input-field col s12">
+    <div class="input-field col s12" id="text_container">
         <textarea id="text_area" class="materialize-textarea"></textarea>
     </div>
     <script>
         $(function() {
-            var simplemde = new SimpleMDE({ element: $("#text_area")[0], toolbar: false });
-            simplemde.value('# hello');
-            simplemde.previewRender();
+            var simplemde = new SimpleMDE();
+            simplemde.previewRender('# Hello Scala', $("#text_container"));
         })
     </script>
 }
