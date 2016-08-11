@@ -6,8 +6,9 @@
     </div>
     <script>
         $(function() {
-            var simplemde = new SimpleMDE();
-            simplemde.previewRender('# Hello Scala', $("#text_container"));
+            var simplemde = new SimpleMDE({ element: $("#text_area")[0], toolbar: false});
+            simplemde.value('# Hello');
+            simplemde.render();
         })
     </script>
 }
