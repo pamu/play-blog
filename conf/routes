@@ -4,18 +4,18 @@
 
 #Auth Controller
 
-GET     /login                           controllers.Auth.login
-GET     /initiateLogin                   controllers.Auth.initiateLogin
-GET     /oauth2                          controllers.Auth.oauth2(state: String)
-GET     /oauth2callback                  controllers.Auth.oauth2callback()
-GET     /oauth2callbackcleaned           controllers.Auth.oauth2callbackCleaned()
-GET     /oops                            controllers.Auth.oops()
-GET     /logout                          controllers.Auth.logout
+GET     /login                           controllers.AuthController.login
+GET     /initiateLogin                   controllers.AuthController.initiateLogin
+GET     /oauth2                          controllers.AuthController.oauth2(state: String)
+GET     /oauth2callback                  controllers.AuthController.oauth2callback()
+GET     /oauth2callbackcleaned           controllers.AuthController.oauth2callbackCleaned()
+GET     /oops                            controllers.AuthController.oops()
+GET     /logout                          controllers.AuthController.logout
 
 #Application Controller
-GET     /                                controllers.Application.index
-GET     /profile                         controllers.Application.profile
-GET     /editor                          controllers.Application.editor
+GET     /                                controllers.ApplicationController.index
+GET     /profile                         controllers.ApplicationController.profile
+GET     /editor                          controllers.ApplicationController.editor
 
 #ApiController v1
 GET    /api/v1/profile                   controllers.ApiController.profile

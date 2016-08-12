@@ -24,7 +24,7 @@ trait Secured {
 
   def onUnauthorized(requestHeader: RequestHeader) = {
     Logger.info("on unauthorised called")
-    Results.Redirect(routes.Auth.login).withNewSession
+    Results.Redirect(routes.AuthController.login).withNewSession
   }
 
   def withAuth[A](p: BodyParser[A])(f: => String => Request[A] => Future[Result]) =
@@ -37,7 +37,7 @@ trait Secured {
       .recover { case th =>
         th.printStackTrace()
         Logger.error(s"finding the user byi id $id failed.")
-        Results.Redirect(routes.Auth.login).withNewSession
+        Results.Redirect(routes.AuthController.login).withNewSession
       }
   }
 

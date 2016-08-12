@@ -9,14 +9,14 @@ import utils.Constants
 import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
 
-class Application @Inject()(override val userServices: UserServices) extends Controller
+class ApplicationController @Inject()(override val userServices: UserServices) extends Controller
   with UserServicesProvider
   with Secured {
 
   def index = withUser(parse.anyContent) { user => req =>
     Logger.info("going to index")
     //Future.successful(Ok(views.html.index()))
-    Future.successful(Redirect(routes.Application.profile))
+    Future.successful(Redirect(routes.ApplicationController.profile))
   }
 
   def profile = withUser(parse.anyContent) { user => req =>
