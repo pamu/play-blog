@@ -1,14 +1,16 @@
-@(image: String)
+@import services.models._
+
+@(userInfo: UserInfo)
 
 @main("PureCode") {
     <script type="text/javascript" src='@routes.Assets.versioned("js/profile.js")'></script>
     <div class="card">
         <div class="row col s12">
             <div class="col s2">
-                <img class="responsive-img materialboxed" src='@image'/>
+                <img class="responsive-img materialboxed" src='@{userInfo.picture.link}'/>
             </div>
             <div class="col s4" id="posts">
-                <p id="user_name">username loading ...</p>
+                <p id="user_name">@{userInfo.name.nameStr}</p>
                 <div class="row">
                     <div class="col s12">
                         Posts

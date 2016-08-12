@@ -22,8 +22,8 @@ class ApplicationController @Inject()(override val userServices: UserServices) e
   def profile = withUser(parse.anyContent) { user => req =>
     Logger.info("profile action")
     userServices.getUserInfo(user.email).flatMap {
-      case Some(info) => Future.successful(Ok(views.html.profile(info.picture.link)))
-      case None => Future.successful(Ok(views.html.profile(Constants.placeHolderPic)))
+      case Some(info) => Future.successful(Ok(views.html.profile(info)))
+      case None => Future.successful(Redirect(routes.AuthController.oops()))
     }
   }
 

@@ -59,8 +59,8 @@ class UserServicesImpl @Inject()(databaseConfigProvider: DatabaseConfigProvider,
     db.run {
       (for {
         status <- userInfoRepo.upsert(userInfo)
-        result <- usersRepo.insert(User(ProfileName(userInfo.name.nameStr.replaceAll("\\s+", "-")), userInfo.email, Source.GOOGLE, DateTime.now(DateTimeZone.UTC),
-          generateUserId(userInfo.name)))
+        result <- usersRepo.insert(User(ProfileName(userInfo.name.nameStr.replaceAll("\\s+", "-")), userInfo.email,
+          Source.GOOGLE, DateTime.now(DateTimeZone.UTC), generateUserId(userInfo.name)))
       } yield result).transactionally
     }
   }
