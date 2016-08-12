@@ -1,5 +1,6 @@
 package slick.sample
 
+import com.google.inject.{Inject, Singleton}
 import play.api.db.slick.DatabaseConfigProvider
 import slick.ast.BaseTypedType
 import slick.backend.DatabaseConfig
@@ -8,7 +9,8 @@ import slick.{ActiveRecord, EntityActions, ModelIdContract}
 
 case class Dog(name: String, id: Option[Long] = None)
 
-class DogActiveRecord(databaseConfigProvider: DatabaseConfigProvider) extends EntityActions {
+@Singleton
+class DogActiveRecord @Inject() (databaseConfigProvider: DatabaseConfigProvider) extends EntityActions {
 
   override val dbConfig: DatabaseConfig[JdbcProfile] = databaseConfigProvider.get[JdbcProfile]
 
