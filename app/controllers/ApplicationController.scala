@@ -33,5 +33,9 @@ class ApplicationController @Inject()(override val userServices: UserServices) e
     Future.successful(Ok(views.html.publish()))
   }
 
+  def drafts = withUser(parse.anyContent) { user => req =>
+    Future.successful(Ok("drafts"))
+  }
+
 }
 

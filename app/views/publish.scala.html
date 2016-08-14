@@ -1,9 +1,17 @@
 @()
 
-@main(""){
+@main("Publish"){
+
+    <div class="row">
+        <div class="input-field col s12">
+            <input id="heading" type="text" required/>
+        </div>
+    </div>
+
     <div class="input-field col s12" id="text_container">
         <textarea id="text_area" class="materialize-textarea"></textarea>
     </div>
+
     <script>
         $(function() {
             var simplemde = new SimpleMDE({ element: $("#text_area")[0], toolbar: false});
