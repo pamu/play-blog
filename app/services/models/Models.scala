@@ -81,10 +81,10 @@ object Source extends Enumeration {
   val GOOGLE, FACEBOOK, Other = Value
 }
 
-case class TypeTagName(name: String)
+case class TypeTagName(val name: String)
 
-case class PublishedCount(count: Int)
+case class PublishedCount(val count: Int)
 
-case class DraftsCount(count: Int)
+case class DraftsCount(val count: Int)
 
 case class UserStats(publishedCount: PublishedCount, draftsCount: DraftsCount)

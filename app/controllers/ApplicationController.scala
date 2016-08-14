@@ -4,6 +4,7 @@ import com.google.inject.Inject
 import play.api.Logger
 import play.api.mvc.Controller
 import services.UserServices
+import services.models.{DraftsCount, PublishedCount, UserStats}
 import utils.Constants
 
 import scala.concurrent.Future
@@ -22,7 +23,7 @@ class ApplicationController @Inject()(override val userServices: UserServices) e
   def profile = withUser(parse.anyContent) { user => req =>
     Logger.info("profile action")
     userServices.getUserInfo(user.email).flatMap {
-      case Some(info) => Future.successful(Ok(views.html.profile(info)))
+      case Some(info) => Future.successful(Ok(views.html.profile(info,UserStats(PublishedCount(10), DraftsCount(5)))))
       case None => Future.successful(Redirect(routes.AuthController.oops()))
     }
   }
