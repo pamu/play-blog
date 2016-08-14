@@ -28,9 +28,9 @@ class ApplicationController @Inject()(override val userServices: UserServices) e
     }
   }
 
-  def editor = withUser(parse.anyContent) { user => req =>
-    Logger.info("editor action")
-    Future.successful(Ok(views.html.editor()))
+  def publish = withUser(parse.anyContent) { user => req =>
+    Logger.info("publish action")
+    Future.successful(Ok(views.html.publish()))
   }
 
 }
