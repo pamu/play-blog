@@ -8,18 +8,10 @@
         </div>
     </div>
 
-    <div class="input-field col s12" id="text_container">
-        <textarea id="text_area" class="materialize-textarea"></textarea>
-    </div>
-
     <script>
         $(function() {
             var simplemde = new SimpleMDE({element: $("#heading")[0], toolbar: false, status: false});
-            simplemde.value('# Heading');
-            
-            var simplemde = new SimpleMDE({ element: $("#text_area")[0], toolbar: false, status: false});
-            simplemde.value('# Hello');
-            simplemde.togglePreview();
+            simplemde.value('# Title here');
         })
     </script>
 }
