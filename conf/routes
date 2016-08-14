@@ -15,7 +15,7 @@ GET     /logout                          controllers.AuthController.logout
 #Application Controller
 GET     /                                controllers.ApplicationController.index
 GET     /profile                         controllers.ApplicationController.profile
-GET     /drafts                          controllers.Application.drafts
+GET     /drafts                          controllers.ApplicationController.drafts
 GET     /publish                         controllers.ApplicationController.publish
 
 #ApiController v1
