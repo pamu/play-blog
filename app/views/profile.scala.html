@@ -11,8 +11,14 @@
             </div>
             <div class="col s4">
                 <h5>@{userInfo.name.nameStr}</h5>
-                <div>Published Posts <span class="new badge blue" data-badge-caption="">@{stats.publishedCount.count}</span></div>
-                <div>Drafts <span class="new badge red" data-badge-caption="">@{stats.draftsCount.count}</span></div>
+                <div class="collection">
+                    <div class="collection-item">
+                        <div>Published Posts <span class="new badge blue" data-badge-caption=" ">@{stats.publishedCount.count}</span></div>
+                    </a>
+                    <div class="collection-item">
+                        <div>Drafts <span class="new badge red" data-badge-caption=" ">@{stats.draftsCount.count}</span></div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
