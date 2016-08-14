@@ -83,8 +83,8 @@ object Source extends Enumeration {
 
 case class TypeTagName(name: String)
 
-case class PostsPublished()
+case class PublishedCount(count: Int)
 
-case class 
+case class DraftsCount(count: Int)
 
-case class UserStats()
+case class UserStats(publishedCount: PublishedCount, draftsCount: DraftsCount)
