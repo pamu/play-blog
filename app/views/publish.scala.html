@@ -14,7 +14,10 @@
 
     <script>
         $(function() {
-            var simplemde = new SimpleMDE({ element: $("#text_area")[0], toolbar: false});
+            var simplemde = new SimpleMDE({element: $("#heading")[0], toolbar: false, status: false});
+            simplemde.value('# Heading');
+            
+            var simplemde = new SimpleMDE({ element: $("#text_area")[0], toolbar: false, status: false});
             simplemde.value('# Hello');
             simplemde.togglePreview();
         })
