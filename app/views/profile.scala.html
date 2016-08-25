@@ -11,8 +11,11 @@
             </div>
             <div class="col s4">
                 <h5>@{userInfo.name.nameStr}</h5>
-                <div class="chip">@{stats.publishedCount.count} posts</div>
-                <div class="chip">@{stats.draftsCount.count} drafts</div>
+                <div class="col s12">
+                    <div class="col s5">@{stats.publishedCount.count} posts</div>
+                    <div class="col s2">.</div>
+                    <div class="col s5">@{stats.draftsCount.count} drafts</div>
+                </div>
             </div>
         </div>
     </div>
