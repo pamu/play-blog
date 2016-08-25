@@ -7,14 +7,14 @@
     <div class="card">
         <div class="row col s12">
             <div class="col s2">
-                <img class="responsive-img materialboxed" src='@{userInfo.picture.link}'/>
+                <img class="circle responsive-img materialboxed" src='@{userInfo.picture.link}'/>
             </div>
             <div class="col s4">
                 <h5>@{userInfo.name.nameStr}</h5>
                 <div class="col s12">
-                    <div class="col s5">@{stats.publishedCount.count} posts</div>
-                    <div class="col s2">.</div>
-                    <div class="col s5">@{stats.draftsCount.count} drafts</div>
+                    <div class="col s6">@{stats.publishedCount.count} posts</div>
+                    <div><h5>.</h5></div>
+                    <div class="col s6">@{stats.draftsCount.count} drafts</div>
                 </div>
             </div>
         </div>
