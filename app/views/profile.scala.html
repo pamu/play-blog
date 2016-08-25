@@ -6,16 +6,12 @@
     <script type="text/javascript" src='@routes.Assets.versioned("js/profile.js")'></script>
     <div class="card">
         <div class="row col s12">
-            <div class="col s2">
+            <div class="col s1">
                 <img class="circle responsive-img materialboxed" src='@{userInfo.picture.link}'/>
             </div>
             <div class="col s4">
-                <h5>@{userInfo.name.nameStr}</h5>
-                <div class="col s12">
-                    <div class="col s6">@{stats.publishedCount.count} posts</div>
-                    <div><h5>.</h5></div>
-                    <div class="col s6">@{stats.draftsCount.count} drafts</div>
-                </div>
+                <h6>@{userInfo.name.nameStr}</h6>
+                <div>@{stats.publishedCount.count} posts . @{stats.draftsCount.count} drafts</div>
             </div>
         </div>
     </div>
